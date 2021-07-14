@@ -9,12 +9,12 @@ export default {
     consultation: []
   },
   mutations: {
-    setPatients(state, payload) {
+    setConsultation(state, payload) {
       state.consultation = payload
     }
   },
   actions: {
-    fetchPatients({commit}) {
+    fetchConsultation({commit}) {
       commit('setConsultation', consultation)
     }
   },

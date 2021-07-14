@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Patients from '../views/Patients.vue'
 import Patient from '../views/Patient.vue'
+import PatientAdd from '../views/PatientAdd.vue'
 import Consultation from '../views/Consultation.vue'
 
 Vue.use(VueRouter)
@@ -19,9 +20,14 @@ const routes = [
     component: Patients
   },
   {
-    path: '/patient',
+    path: '/patientAdd',
+    name: 'PatientAdd',
+    component: PatientAdd
+  },
+  {
+    path: '/patients/:id',
     name: 'Patient',
-    component: Patient
+    component: Patient,
   },
   {
     path: '/consultation',

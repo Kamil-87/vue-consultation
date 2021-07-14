@@ -12,25 +12,25 @@
         outlined
         class="ml-3"
       >
-        <router-link to="/">Главная</router-link>
+        <router-link style="color: white" to="/">Главная</router-link>
       </v-btn>
       <v-btn
         outlined
         class="ml-3"
       >
-        <router-link to="/patients">Пациенты</router-link>
+        <router-link style="color: white" to="/patients">Пациенты</router-link>
       </v-btn>
+<!--      <v-btn-->
+<!--        outlined-->
+<!--        class="ml-3"-->
+<!--      >-->
+<!--        <router-link style="color: white" to="/patient">Пациент</router-link>-->
+<!--      </v-btn>-->
       <v-btn
         outlined
         class="ml-3"
       >
-        <router-link to="/patient">Пациент</router-link>
-      </v-btn>
-      <v-btn
-        outlined
-        class="ml-3"
-      >
-        <router-link to="/consultation">Консультация</router-link>
+        <router-link style="color: white" to="/consultation">Консультация</router-link>
       </v-btn>
 
     </v-app-bar>
