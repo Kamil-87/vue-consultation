@@ -1,5 +1,206 @@
 <template>
   <v-container>
-    <h1>This is an Consultation page</h1>
+    <h1 class="subheading grey--text mb-5">Добавление консультации</h1>
+    <form>
+      <v-select
+        v-model="select"
+        :items="specialists"
+        :error-messages="selectErrors"
+        label="Выберите специалиста"
+        prepend-inner-icon="mdi-account-supervisor"
+        required
+        @change="$v.select.$touch()"
+        @blur="$v.select.$touch()"
+      ></v-select>
+
+      <v-menu
+        v-model="menuDate"
+        :close-on-content-click="false"
+        max-width="290"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            :value="formattedDay"
+            clearable
+            label="Дата консультации"
+            prepend-inner-icon="mdi-calendar"
+            :error-messages="dayErrors"
+            readonly
+            required
+            v-bind="attrs"
+            v-on="on"
+            @click:clear="day = null"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="day"
+          @change="menuDate = false"
+          :min="dateToday"
+          locale="ru-ru"
+        ></v-date-picker>
+      </v-menu>
+
+      <v-menu
+        ref="menuTime"
+        v-model="menuTime"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="time"
+        transition="scale-transition"
+        offset-y
+        max-width="290px"
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="time"
+            label="Время консультации"
+            prepend-inner-icon="mdi-clock-time-four-outline"
+            :error-messages="timeErrors"
+            readonly
+            required
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-if="menuTime"
+          v-model="time"
+          :allowed-minutes="allowedStep"
+          format="24hr"
+          min="8:00"
+          max="20:00"
+          full-width
+          @click:minute="$refs.menuTime.save(time)"
+        ></v-time-picker>
+      </v-menu>
+
+      <v-textarea
+        label="Симптомы"
+        rows="3"
+        prepend-inner-icon="mdi-comment"
+        :counter="2048"
+        maxlength="2048"
+        v-model="description"
+        :error-messages="descriptionErrors"
+      ></v-textarea>
+
+      <v-btn
+        class="mr-4"
+        @click="submitHandler"
+      >
+        Добавить
+      </v-btn>
+      <v-btn @click="clear">
+        Очистить
+      </v-btn>
+    </form>
   </v-container>
 </template>
+
+<script>
+import {validationMixin} from 'vuelidate'
+import {required, maxLength} from 'vuelidate/lib/validators'
+import {format, parseISO } from 'date-fns'
+
+export default {
+  mixins: [validationMixin],
+
+  validations: {
+    select: {required},
+    day: {required},
+    time: {required},
+    description: {maxLength: maxLength(2048)},
+  },
+
+  data() {
+    return {
+      menuDate: false,
+      menuTime: false,
+      day: null,
+      time: null,
+      select: '',
+      specialists: [
+        'Терапевт',
+        'Стоматолог',
+        'Гастроэнтеролог',
+        'Невролог',
+        'ЛОР',
+      ],
+      description: ''
+    }
+  },
+  computed: {
+    selectErrors() {
+      const errors = []
+      if (!this.$v.select.$dirty) return errors
+      !this.$v.select.required && errors.push('Поле обязательно для заполнения')
+      return errors
+    },
+    dayErrors() {
+      const errors = []
+      if (!this.$v.select.$dirty) return errors
+      !this.$v.select.required && errors.push('Поле обязательно для заполнения')
+      return errors
+    },
+    timeErrors() {
+      const errors = []
+      if (!this.$v.time.$dirty) return errors
+      !this.$v.time.required && errors.push('Поле обязательно для заполнения')
+      return errors
+    },
+    descriptionErrors() {
+      const errors = []
+      if (!this.$v.description.$dirty) return errors
+      !this.$v.description.maxLength && errors.push('Не больше 2048 символов')
+      return errors
+    },
+    formattedDay() {
+      return this.day ? format(parseISO(this.day), 'dd-MM-yyyy') : ''
+    },
+    dateToday() {
+      return format(Date.now(), 'yyyy-MM-dd')
+    }
+  },
+  methods: {
+    // шаг по 5 минут
+    allowedStep: m => m % 5 === 0,
+
+    submitHandler() {
+      console.log(format(Date.now(), 'yyyy-MM-dd'))
+
+
+      if (this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
+
+      try {
+        const formData = {
+          day: this.day,
+          time: this.time,
+          specialist: this.select,
+        }
+        console.log(formData)
+        // this.loading = true
+        this.$store.dispatch('createPatient', formData)
+      } catch (e) {
+
+      }
+      if(this.$v.$invalid) {
+
+      }
+    },
+    clear() {
+      this.$v.$reset()
+      this.day = null
+      this.time = null
+      this.description = ''
+    },
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

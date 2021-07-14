@@ -20,6 +20,11 @@
         </v-list>
       </v-card>
 
+    <v-btn
+      @click="addConsultation"
+    >Добавить консультацию</v-btn>
+    <v-spacer class="mb-5" />
+
       <v-card>
         <v-card-title>Назначенные приемы</v-card-title>
         <v-list>
@@ -29,6 +34,7 @@
               <v-list-item-subtitle>{{ `ср. 27 июля 2021г. 15:00` }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
+
 
           <v-list-item>
             <v-list-item-content>
@@ -49,7 +55,9 @@ export default {
     }
   },
   methods: {
-
+    addConsultation() {
+      this.$router.push({ name: 'ConsultationAdd', params: { id: '1' } })
+    }
   }
 }
 </script>

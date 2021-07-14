@@ -1,7 +1,7 @@
 const consultation = [
-  {date: '14-07-2021', time: '08:30', symptoms: 'болезнь'},
-  {date: '15-07-2021', time: '09:30', symptoms: 'болезнь'},
   {date: '15-07-2021', time: '08:30', symptoms: 'болезнь'},
+  {date: '16-07-2021', time: '09:30', symptoms: 'болезнь'},
+  {date: '17-07-2021', time: '08:30', symptoms: 'болезнь'},
 ]
 
 export default {
