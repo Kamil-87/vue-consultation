@@ -73,6 +73,7 @@
           v-model="birthDay"
           @change="menu = false"
           locale="ru-ru"
+          :max="dateToday"
         ></v-date-picker>
       </v-menu>
 
@@ -212,6 +213,9 @@ export default {
     formattedBirthDay() {
       return this.birthDay ? format(parseISO(this.birthDay), 'dd-MM-yyyy') : ''
     },
+    dateToday() {
+      return format(Date.now(), 'yyyy-MM-dd')
+    }
   },
 
   methods: {
@@ -223,6 +227,7 @@ export default {
 
       try {
         const formData = {
+          id: Date.now(),
           lastName: this.lastName,
           firstName: this.firstName,
           patronymic: this.patronymic,
@@ -230,6 +235,7 @@ export default {
           height: this.height,
           weight: this.weight,
           gender: this.select,
+          birthDay: this.formattedBirthDay
         }
         console.log(formData)
         // this.loading = true

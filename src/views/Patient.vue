@@ -27,37 +27,41 @@
 
       <v-card>
         <v-card-title>Назначенные приемы</v-card-title>
+<!--        <pre>{{ consultations }}</pre>-->
         <v-list>
-          <v-list-item>
+          <v-list-item
+            v-for="(consultation, index) in consultations"
+            :key="index"
+          >
             <v-list-item-content>
-              <v-list-item-title>{{ `Врач офтальмолог - ${'Сухов П.И.'} ` }}</v-list-item-title>
-              <v-list-item-subtitle>{{ `ср. 27 июля 2021г. 15:00` }}</v-list-item-subtitle>
+              <v-list-item-title>{{ consultation.specialist }}</v-list-item-title>
+              <v-list-item-subtitle>{{ `${consultation.day} ${consultation.time} ` }}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
 
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>{{ `Врач офтальмолог - ${'Сухов П.И.'} ` }}</v-list-item-title>
-              <v-list-item-subtitle>{{ `ср. 27 июля 2021г. 15:00` }}</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
         </v-list>
       </v-card>
   </v-container>
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex"
+
 export default {
   computed: {
     patient() {
       return this.$store.getters.patientById(this.$route.params.id)
-    }
+    },
+    ...mapGetters({consultations: 'consultations'})
   },
   methods: {
     addConsultation() {
       this.$router.push({ name: 'ConsultationAdd', params: { id: '1' } })
-    }
+    },
+    ...mapActions(['fetchConsultation'])
+  },
+  mounted() {
+    this.fetchConsultation()
   }
 }
 </script>

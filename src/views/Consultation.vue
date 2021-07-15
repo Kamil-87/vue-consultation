@@ -177,22 +177,21 @@ export default {
 
       try {
         const formData = {
+          id: Date.now(),
           day: this.day,
           time: this.time,
           specialist: this.select,
         }
         console.log(formData)
         // this.loading = true
-        this.$store.dispatch('createPatient', formData)
+        this.$store.dispatch('createConsultation', formData)
       } catch (e) {
-
-      }
-      if(this.$v.$invalid) {
-
+        console.log(e)
       }
     },
     clear() {
       this.$v.$reset()
+      this.select = ''
       this.day = null
       this.time = null
       this.description = ''
