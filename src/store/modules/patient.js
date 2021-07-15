@@ -11,7 +11,7 @@ const patientsData = [
 
 export default {
   state: {
-    patients: JSON.parse(localStorage.getItem('patients')) ?? []
+    patients: JSON.parse(localStorage.getItem('patients')) || []
   },
   mutations: {
     setPatients(state, patients) {

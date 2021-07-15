@@ -14,7 +14,7 @@
       </v-card-title>
 
       <v-btn class="mb-5">
-        <router-link :to="{ name: 'PatientAdd'}">
+        <router-link to="/patientAdd">
           Добавить пациента
         </router-link>
       </v-btn>
@@ -51,7 +51,7 @@
             <td>{{ item.INIPA }}</td>
             <td>
               <v-btn>
-                <router-link :to="{ name: 'Patient', params: { id: item.id }}">
+                <router-link :to="`/patients/` + item.id">
                   Подробнее
                 </router-link>
               </v-btn>
@@ -88,7 +88,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchPatients()
+    // this.fetchPatients()
   },
   methods: {
     ...mapActions(['fetchPatients'])

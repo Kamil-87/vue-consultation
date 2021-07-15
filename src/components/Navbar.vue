@@ -7,32 +7,9 @@
       color="teal"
       dark
     >
-      <v-spacer />
-      <v-btn
-        outlined
-        class="ml-3"
-      >
-        <router-link style="color: white" to="/">Главная</router-link>
-      </v-btn>
-      <v-btn
-        outlined
-        class="ml-3"
-      >
-        <router-link style="color: white" to="/patients">Пациенты</router-link>
-      </v-btn>
-<!--      <v-btn-->
-<!--        outlined-->
-<!--        class="ml-3"-->
-<!--      >-->
-<!--        <router-link style="color: white" to="/patient">Пациент</router-link>-->
-<!--      </v-btn>-->
-      <v-btn
-        outlined
-        class="ml-3"
-      >
-        <router-link style="color: white" to="/consultation">Консультация</router-link>
-      </v-btn>
-
+      <v-spacer/>
+      <router-link style="color: white" to="/">Главная</router-link>
+      <router-link style="color: white" to="/patients">Пациенты</router-link>
     </v-app-bar>
 
   </v-container>

@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <h1 class="subheading grey--text mb-5">Добавление консультации</h1>
+    <pre>{{$route.params.id}}</pre>
     <form>
       <v-select
         v-model="select"
@@ -169,7 +170,6 @@ export default {
     submitHandler() {
       console.log(format(Date.now(), 'yyyy-MM-dd'))
 
-
       if (this.$v.$invalid) {
         this.$v.$touch()
         return
@@ -178,7 +178,7 @@ export default {
       try {
         const formData = {
           id: Date.now(),
-          day: this.day,
+          day: this.formattedDay,
           time: this.time,
           specialist: this.select,
         }

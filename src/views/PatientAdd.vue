@@ -58,19 +58,19 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            :value="formattedBirthDay"
+            :value="formattedBirthday"
             clearable
             label="Дата рождения"
             prepend-inner-icon="mdi-calendar"
-            :error-messages="birthDayErrors"
+            :error-messages="birthdayErrors"
             readonly
             v-bind="attrs"
             v-on="on"
-            @click:clear="birthDay = null"
+            @click:clear="birthday = null"
           ></v-text-field>
         </template>
         <v-date-picker
-          v-model="birthDay"
+          v-model="birthday"
           @change="menu = false"
           locale="ru-ru"
           :max="dateToday"
@@ -135,12 +135,12 @@ export default {
     height: {maxLength: maxLength(3)},
     weight: {maxLength: maxLength(3)},
     select: {required},
-    birthDay: {required}
+    birthday: {required}
   },
 
   data: () => ({
     phone: '',
-    birthDay: null,
+    birthday: null,
     lastName: '',
     firstName: '',
     patronymic: '',
@@ -164,10 +164,10 @@ export default {
       !this.$v.select.required && errors.push('Поле обязательно для заполнения')
       return errors
     },
-    birthDayErrors() {
+    birthdayErrors() {
       const errors = []
-      if (!this.$v.select.$dirty) return errors
-      !this.$v.select.required && errors.push('Поле обязательно для заполнения')
+      if (!this.$v.birthday.$dirty) return errors
+      !this.$v.birthday.required && errors.push('Поле обязательно для заполнения')
       return errors
     },
     lastNameErrors() {
@@ -210,8 +210,8 @@ export default {
       !this.$v.weight.maxLength && errors.push('Не больше 3 символов')
       return errors
     },
-    formattedBirthDay() {
-      return this.birthDay ? format(parseISO(this.birthDay), 'dd-MM-yyyy') : ''
+    formattedBirthday() {
+      return this.birthday ? format(parseISO(this.birthday), 'dd-MM-yyyy') : ''
     },
     dateToday() {
       return format(Date.now(), 'yyyy-MM-dd')
@@ -235,7 +235,7 @@ export default {
           height: this.height,
           weight: this.weight,
           gender: this.select,
-          birthDay: this.formattedBirthDay
+          birthday: this.formattedBirthday
         }
         console.log(formData)
         // this.loading = true
@@ -258,7 +258,7 @@ export default {
       this.height = ''
       this.weight = ''
       this.select = null
-      this.birthDay = null
+      this.birthday = null
     },
   },
 }

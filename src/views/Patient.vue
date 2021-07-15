@@ -30,8 +30,8 @@
 <!--        <pre>{{ consultations }}</pre>-->
         <v-list>
           <v-list-item
-            v-for="(consultation, index) in consultations"
-            :key="index"
+            v-for="consultation in consultations"
+            :key="consultation.id"
           >
             <v-list-item-content>
               <v-list-item-title>{{ consultation.specialist }}</v-list-item-title>
@@ -50,13 +50,13 @@ import {mapActions, mapGetters} from "vuex"
 export default {
   computed: {
     patient() {
-      return this.$store.getters.patientById(this.$route.params.id)
+      return this.$store.getters.patientById(+this.$route.params.id)
     },
     ...mapGetters({consultations: 'consultations'})
   },
   methods: {
     addConsultation() {
-      this.$router.push({ name: 'ConsultationAdd', params: { id: '1' } })
+      this.$router.push({ name: 'ConsultationAdd', params: { id: this.$route.params.id } })
     },
     ...mapActions(['fetchConsultation'])
   },
