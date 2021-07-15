@@ -8,6 +8,7 @@ const patientsData = [
   {id: 2, lastName: 'Петров', firstName: 'Пётр', patronymic: 'Петрович', birthday: '13-07-1953', gender: 'Мужской', INIPA: '145-111-111 12', height: 182, weight: 76},
   {id: 3, lastName: 'Петрова', firstName: 'Мария', patronymic: 'Петровна', birthday: '13-07-1953', gender: 'Женский', INIPA: '145-111-111 13', height: 172, weight: 66},
 ]
+// const patientData = {id: 1, lastName: 'Петров', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', INIPA: '145-111-111 11', height: 192, weight: 86}
 
 export default {
   state: {
@@ -21,6 +22,20 @@ export default {
     createPatient(state, patient) {
       state.patients.push(patient)
       localStorage.setItem('patients', JSON.stringify(state.patients))
+    },
+    updatePatient(state, patientData) {
+      const patient = state.patients.find(p => p.id === patientData.id)
+
+      patient.firstName = patientData.firstName
+      patient.lastName = patientData.lastName
+      patient.patronymic = patientData.patronymic
+      patient.INIPA = patientData.INIPA
+      patient.height = patientData.height
+      patient.weight = patientData.weight
+      patient.select = patientData.gender
+      patient.birthday = patientData.birthday
+
+      localStorage.setItem('patients', JSON.stringify(state.patients))
     }
   },
   actions: {
@@ -29,6 +44,9 @@ export default {
     },
     createPatient({commit}, patient) {
       commit('createPatient', patient)
+    },
+    updatePatient({commit}, patientData) {
+      commit('updatePatient', patientData)
     }
   },
   getters: {

@@ -8,7 +8,7 @@
       dark
     >
       <v-spacer/>
-      <router-link style="color: white" to="/">Главная</router-link>
+      <router-link class="mr-10" style="color: white" to="/">Главная</router-link>
       <router-link style="color: white" to="/patients">Пациенты</router-link>
     </v-app-bar>
 

@@ -248,8 +248,6 @@ export default {
       }
     },
     clear() {
-      console.log(this.$attrs['data-test'])
-
       this.$v.$reset()
       this.lastName = ''
       this.firstName = ''

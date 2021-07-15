@@ -1,6 +1,10 @@
 <template>
   <v-container v-if="patient">
-    <pre>{{$route.params.id}}</pre>
+    <v-btn
+      @click="editPatient"
+    >Редактировать данные пациента</v-btn>
+    <v-spacer class="mb-5" />
+
       <v-card class="mb-5">
         <v-card-title>{{ `${patient.lastName} ${patient.firstName} ${patient.patronymic}` }}</v-card-title>
         <v-list>
@@ -57,6 +61,9 @@ export default {
   methods: {
     addConsultation() {
       this.$router.push({ name: 'ConsultationAdd', params: { id: this.$route.params.id } })
+    },
+    editPatient() {
+      this.$router.push({ name: 'PatientEdit', params: { id: this.$route.params.id } })
     },
     ...mapActions(['fetchConsultation'])
   },
