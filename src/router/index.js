@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 import Patients from '../views/Patients.vue'
 import Patient from '../views/Patient.vue'
 import PatientAdd from '../views/PatientAdd.vue'
@@ -12,11 +11,6 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/patients',
     name: 'Patients',
     component: Patients
   },

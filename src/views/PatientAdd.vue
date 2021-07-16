@@ -1,5 +1,17 @@
 <template>
   <v-container>
+      <v-snackbar
+        v-model="snackbar"
+        :timeout="3000"
+        :color="statusMessage"
+        top
+        right
+        min-width="250px"
+        class="mt-15"
+      >
+        {{ text }}
+      </v-snackbar>
+
     <h1 class="subheading grey--text mb-5">Добавить пациента</h1>
     <form>
       <v-text-field
@@ -139,7 +151,10 @@ export default {
   },
 
   data: () => ({
-    phone: '',
+    text: 'Text',
+    snackbar: false,
+    statusMessage: '',
+
     birthday: null,
     lastName: '',
     firstName: '',
@@ -237,15 +252,20 @@ export default {
           gender: this.select,
           birthday: this.formattedBirthday
         }
-        console.log(formData)
         // this.loading = true
         this.$store.dispatch('createPatient', formData)
+        this.text = 'Данные успешно добавлены!'
+        this.statusMessage = 'success'
+        this.snackbar = true
+        this.clear()
+        // this.$router.push('/')
       } catch (e) {
-
+        console.log(e)
+        this.text = 'Ошибка'
+        this.statusMessage = 'error'
+        this.snackbar = true
       }
-      if(this.$v.$invalid) {
 
-      }
     },
     clear() {
       this.$v.$reset()

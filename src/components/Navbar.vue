@@ -1,24 +1,50 @@
 <template>
-  <v-container
-    fluid
-    style="padding: 0"
-  >
+  <nav>
     <v-app-bar
-      color="teal"
+      flat
+      app
       dark
+      color="primary"
     >
-      <v-spacer/>
-      <router-link class="mr-10" style="color: white" to="/">Главная</router-link>
-      <router-link style="color: white" to="/patients">Пациенты</router-link>
-    </v-app-bar>
+      <v-container>
+        <!--      <v-app-bar-nav-icon @click="drawer = !drawer" class="grey&#45;&#45;text"></v-app-bar-nav-icon>-->
+        <v-app-bar-title class="text-uppercase">
+            <router-link
+              to="/"
+            >
+              <v-btn outlined>
+                Пациенты
+              </v-btn>
+            </router-link>
 
-  </v-container>
+        </v-app-bar-title>
+        <v-spacer></v-spacer>
+      </v-container>
+    </v-app-bar>
+    <!-- dropdown menu -->
+
+  </nav>
 </template>
 
 <script>
-export default {}
+// import Popup from './Popup'
+
+export default {
+  components: {},
+  data() {
+    return {
+      drawer: false,
+      links: [
+        {icon: 'dashboard', text: 'Dashboard', route: '/'},
+        {icon: 'folder', text: 'My Projects', route: '/projects'},
+        {icon: 'person', text: 'Team', route: '/team'},
+      ],
+      snackbar: false
+    }
+  }
+}
 </script>
 
-<style scoped>
+<style>
 
 </style>

@@ -17,7 +17,7 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-Vue.directive('phone', {
+/*Vue.directive('INIPA', {
   bind(el) {
     function replaceNumberForInput(value) {
       let val = ''
@@ -56,4 +56,4 @@ Vue.directive('phone', {
     }
 
   }
-})
+})*/

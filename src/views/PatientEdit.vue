@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="3000"
+      :color="statusMessage"
+      top
+      right
+      min-width="250px"
+      class="mt-15"
+    >
+      {{ text }}
+    </v-snackbar>
+
     <h1 class="subheading grey--text mb-5">Редактировать данные пациента</h1>
     <form>
       <v-text-field
@@ -130,6 +142,10 @@ export default {
   },
 
   data: () => ({
+    text: 'Text',
+    snackbar: false,
+    statusMessage: '',
+
     patientInfo: {
       birthday: null,
       lastName: '',
@@ -167,9 +183,7 @@ export default {
     }
   },
   created() {
-    const { id } = this.patients[0]
-    this.current = id
-
+    this.current = this.$route.params.id
   },
 
   computed: {
@@ -255,8 +269,15 @@ export default {
         }
         // this.loading = true
         this.$store.dispatch('updatePatient', formData)
-      } catch (e) {
+        this.text = 'Данные успешно изменены!'
+        this.statusMessage = 'success'
+        this.snackbar = true
 
+      } catch (e) {
+        console.log(e)
+        this.text = 'Ошибка'
+        this.statusMessage = 'error'
+        this.snackbar = true
       }
       if(this.$v.$invalid) {
 

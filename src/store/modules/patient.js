@@ -36,6 +36,10 @@ export default {
       patient.birthday = patientData.birthday
 
       localStorage.setItem('patients', JSON.stringify(state.patients))
+    },
+    deletePatient(state, userId) {
+      const index = state.patients.findIndex(el => el.id === userId)
+      state.patients.splice(index, 1)
     }
   },
   actions: {
@@ -47,6 +51,9 @@ export default {
     },
     updatePatient({commit}, patientData) {
       commit('updatePatient', patientData)
+    },
+    deletePatient({commit}, userId) {
+      commit('deletePatient', userId)
     }
   },
   getters: {

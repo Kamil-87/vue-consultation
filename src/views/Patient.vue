@@ -1,7 +1,9 @@
 <template>
   <v-container v-if="patient">
+
     <v-btn
       @click="editPatient"
+      color="primary"
     >Редактировать данные пациента</v-btn>
     <v-spacer class="mb-5" />
 
@@ -26,6 +28,7 @@
 
     <v-btn
       @click="addConsultation"
+      color="primary"
     >Добавить консультацию</v-btn>
     <v-spacer class="mb-5" />
 

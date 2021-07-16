@@ -14,7 +14,7 @@
       </v-card-title>
 
       <v-btn class="mb-5">
-        <router-link to="/patientAdd">
+        <router-link to="/patient-add">
           Добавить пациента
         </router-link>
       </v-btn>
@@ -50,10 +50,38 @@
             <td>{{ item.gender }}</td>
             <td>{{ item.INIPA }}</td>
             <td>
-              <v-btn>
-                <router-link :to="`/patients/` + item.id">
-                  Подробнее
-                </router-link>
+              <v-btn
+                class="mx-1"
+                small
+                fab
+                color="primary"
+                @click="detailedPatient(item.id)"
+              >
+                <v-icon dark>
+                  mdi-open-in-new
+                </v-icon>
+              </v-btn>
+              <v-btn
+                class="mx-1"
+                small
+                fab
+                color="primary"
+                @click="editPatient(item.id)"
+              >
+                <v-icon dark>
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+              <v-btn
+                class="mx-1"
+                small
+                fab
+                color="error"
+                @click="deletePatient(item.id)"
+              >
+                <v-icon dark>
+                  mdi-delete
+                </v-icon>
               </v-btn>
             </td>
           </tr>
@@ -91,7 +119,16 @@ export default {
     // this.fetchPatients()
   },
   methods: {
-    ...mapActions(['fetchPatients'])
+    ...mapActions(['fetchPatients', 'deletePatient']),
+    detailedPatient(userId) {
+      this.$router.push({ name: 'Patient', params: { id: userId } })
+    },
+    editPatient(userId) {
+      this.$router.push({ name: 'PatientEdit', params: { id: userId } })
+    },
+    deletePatient(userId) {
+      this.$store.dispatch('deletePatient', userId)
+    }
   },
   fullName(item) {
     `${item.lastName} ${item.firstName} ${item.patronymic}`
