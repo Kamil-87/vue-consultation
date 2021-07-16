@@ -121,6 +121,7 @@ export default {
   methods: {
     ...mapActions(['fetchPatients', 'deletePatient']),
     detailedPatient(userId) {
+      console.log('userId', userId)
       this.$router.push({ name: 'Patient', params: { id: userId } })
     },
     editPatient(userId) {

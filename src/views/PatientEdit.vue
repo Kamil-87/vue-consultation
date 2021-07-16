@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <pre>{{$route.params.id}}</pre>
     <v-snackbar
       v-model="snackbar"
       :timeout="3000"
@@ -168,22 +169,27 @@ export default {
 
   watch: {
     current(id) {
-      const patientInfo = this.patients.find(p => p.id === id)
-      const birthday = patientInfo.birthday.split('-').reverse().join('-')
+      console.log('watch', id)
+      const patient = this.patients.find(p => p.id === id)
+      const birthday = patient.birthday.split('-').reverse().join('-')
 
       //присваиваем полям значения текущего пациента
-      this.patientInfo.firstName = patientInfo.firstName
-      this.patientInfo.lastName = patientInfo.lastName
-      this.patientInfo.patronymic = patientInfo.patronymic
-      this.patientInfo.INIPA = patientInfo.INIPA
-      this.patientInfo.height = patientInfo.height
-      this.patientInfo.weight = patientInfo.weight
-      this.patientInfo.select = patientInfo.gender
+      this.patientInfo.firstName = patient.firstName
+      this.patientInfo.lastName = patient.lastName
+      this.patientInfo.patronymic = patient.patronymic
+      this.patientInfo.INIPA = patient.INIPA
+      this.patientInfo.height = patient.height
+      this.patientInfo.weight = patient.weight
+      this.patientInfo.select = patient.gender
       this.patientInfo.birthday = birthday
     }
   },
   created() {
-    this.current = this.$route.params.id
+
+    this.current =this.$route.params.id
+  },
+  beforeDestroy() {
+    this.current = null
   },
 
   computed: {
