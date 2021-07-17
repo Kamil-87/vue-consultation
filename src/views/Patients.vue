@@ -5,19 +5,17 @@
         Пациенты
         <v-spacer></v-spacer>
         <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
         ></v-text-field>
       </v-card-title>
 
       <v-card-text>
-        <v-btn class="mb-5">
-          <router-link to="/patient-add">
-            Добавить пациента
-          </router-link>
+        <v-btn class="mb-5" @click="addPatient()">
+          Добавить пациента
         </v-btn>
 
         <v-simple-table>
@@ -43,8 +41,8 @@
             </thead>
             <tbody>
             <tr
-              v-for="item in patients"
-              :key="item.id"
+                v-for="item in patients"
+                :key="item.id"
             >
               <td>{{ `${item.lastName} ${item.firstName}` }}</td>
               <td>{{ item.birthday }}</td>
@@ -52,36 +50,36 @@
               <td>{{ item.snils }}</td>
               <td>
                 <v-btn
-                  icon
-                  class="mx-1"
-                  small
-                  fab
-                  color="primary"
-                  @click="detailedPatient(item.id)"
+                    icon
+                    class="mx-1"
+                    small
+                    fab
+                    color="primary"
+                    @click="detailedPatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-open-in-new
                   </v-icon>
                 </v-btn>
                 <v-btn
-                  icon
-                  class="mx-1"
-                  small
-                  fab
-                  color="primary"
-                  @click="editPatient(item.id)"
+                    icon
+                    class="mx-1"
+                    small
+                    fab
+                    color="primary"
+                    @click="editPatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-pencil
                   </v-icon>
                 </v-btn>
                 <v-btn
-                  icon
-                  class="mx-1"
-                  small
-                  fab
-                  color="error"
-                  @click="deletePatient(item.id)"
+                    icon
+                    class="mx-1"
+                    small
+                    fab
+                    color="error"
+                    @click="deletePatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-delete
@@ -127,10 +125,13 @@ export default {
     ...mapActions(['fetchPatients', 'deletePatient']),
     detailedPatient(userId) {
       console.log('userId', userId)
-      this.$router.push({ name: 'Patient', params: { id: userId } })
+      this.$router.push({name: 'Patient', params: {id: userId}})
+    },
+    addPatient() {
+      this.$router.push({name: 'PatientAdd'})
     },
     editPatient(userId) {
-      this.$router.push({ name: 'PatientEdit', params: { id: userId } })
+      this.$router.push({name: 'PatientEdit', params: {id: userId}})
     },
     deletePatient(userId) {
       this.$store.dispatch('deletePatient', userId)

@@ -2,8 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Patients from '../views/Patients.vue'
 import Patient from '../views/Patient.vue'
-import PatientAdd from '../views/PatientAdd.vue'
-import PatientEdit from '../views/PatientEdit.vue'
+import PatientAddOrEdit from '../views/PatientAddOrEdit.vue'
 import ConsultationAdd from '../views/Consultation.vue'
 
 Vue.use(VueRouter)
@@ -17,12 +16,12 @@ const routes = [
   {
     path: '/patient-add',
     name: 'PatientAdd',
-    component: PatientAdd
+    component: PatientAddOrEdit
   },
   {
     path: '/patient-edit',
     name: 'PatientEdit',
-    component: PatientEdit
+    component: PatientAddOrEdit
   },
   {
     path: '/patients/:id',
