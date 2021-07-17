@@ -42,16 +42,16 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="INIPA"
-        :error-messages="INIPAErrors"
-        placeholder="___-___-___ __ "
+        v-model="snils"
+        :error-messages="snilsErrors"
+        placeholder="___-___-___ __"
         label="СНИЛС"
-        maxlength="11"
-        @input="$v.INIPA.$touch()"
-        @blur="$v.INIPA.$touch()"
+        maxlength="14"
+        @input="$v.snils.$touch()"
+        @blur="$v.snils.$touch()"
       ></v-text-field>
 
-<!--      добраться до input и прописать v-phone и поменять на v-INIPA -->
+<!--      добраться до input и прописать v-phone и поменять на v-snils -->
 <!--      <v-text-field
         data-test="test"
         v-model="phone"
@@ -143,7 +143,7 @@ export default {
     firstName: {required, maxLength: maxLength(10)},
     lastName: {required, maxLength: maxLength(10)},
     patronymic: {maxLength: maxLength(10)},
-    INIPA: {required, maxLength: maxLength(11), numeric},
+    snils: {required, maxLength: maxLength(11), numeric},
     height: {maxLength: maxLength(3)},
     weight: {maxLength: maxLength(3)},
     select: {required},
@@ -159,7 +159,7 @@ export default {
     lastName: '',
     firstName: '',
     patronymic: '',
-    INIPA: '',
+    snils: '',
     height: '',
     weight: '',
     select: null,
@@ -205,12 +205,12 @@ export default {
       !this.$v.patronymic.maxLength && errors.push('Не больше 10 символов')
       return errors
     },
-    INIPAErrors() {
+    snilsErrors() {
       const errors = []
-      if (!this.$v.INIPA.$dirty) return errors
-      !this.$v.INIPA.required && errors.push('Поле обязательно для заполнения')
-      !this.$v.INIPA.maxLength && errors.push('Не больше 11 символов')
-      !this.$v.INIPA.numeric && errors.push('Только цифры')
+      if (!this.$v.snils.$dirty) return errors
+      !this.$v.snils.required && errors.push('Поле обязательно для заполнения')
+      !this.$v.snils.maxLength && errors.push('Не больше 11 символов')
+      !this.$v.snils.numeric && errors.push('Только цифры')
       return errors
     },
     heightErrors() {
@@ -246,7 +246,7 @@ export default {
           lastName: this.lastName,
           firstName: this.firstName,
           patronymic: this.patronymic,
-          INIPA: this.INIPA,
+          snils: this.snils,
           height: this.height,
           weight: this.weight,
           gender: this.select,
@@ -272,7 +272,7 @@ export default {
       this.lastName = ''
       this.firstName = ''
       this.patronymic = ''
-      this.INIPA = ''
+      this.snils = ''
       this.height = ''
       this.weight = ''
       this.select = null

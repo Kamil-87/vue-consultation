@@ -42,13 +42,13 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="patientInfo.INIPA"
-        :error-messages="INIPAErrors"
+        v-model="patientInfo.snils"
+        :error-messages="snilsErrors"
         placeholder="___-___-___ __ "
         label="СНИЛС"
         maxlength="11"
-        @input="$v.patientInfo.INIPA.$touch()"
-        @blur="$v.patientInfo.INIPA.$touch()"
+        @input="$v.patientInfo.snils.$touch()"
+        @blur="$v.patientInfo.snils.$touch()"
       ></v-text-field>
 
       <v-menu
@@ -133,7 +133,7 @@ export default {
       firstName: {required, maxLength: maxLength(10)},
       lastName: {required, maxLength: maxLength(10)},
       patronymic: {maxLength: maxLength(10)},
-      INIPA: {required, maxLength: maxLength(11), numeric},
+      snils: {required, maxLength: maxLength(11), numeric},
       height: {maxLength: maxLength(3)},
       weight: {maxLength: maxLength(3)},
       select: {required},
@@ -151,7 +151,7 @@ export default {
       lastName: '',
       firstName: '',
       patronymic: '',
-      INIPA: '',
+      snils: '',
       height: '',
       weight: '',
       select: null,
@@ -176,7 +176,7 @@ export default {
       this.patientInfo.firstName = patient.firstName
       this.patientInfo.lastName = patient.lastName
       this.patientInfo.patronymic = patient.patronymic
-      this.patientInfo.INIPA = patient.INIPA
+      this.patientInfo.snils = patient.snils
       this.patientInfo.height = patient.height
       this.patientInfo.weight = patient.weight
       this.patientInfo.select = patient.gender
@@ -225,12 +225,12 @@ export default {
       !this.$v.patientInfo.patronymic.maxLength && errors.push('Не больше 10 символов')
       return errors
     },
-    INIPAErrors() {
+    snilsErrors() {
       const errors = []
-      if (!this.$v.patientInfo.INIPA.$dirty) return errors
-      !this.$v.patientInfo.INIPA.required && errors.push('Поле обязательно для заполнения')
-      !this.$v.patientInfo.INIPA.maxLength && errors.push('Не больше 11 символов')
-      !this.$v.patientInfo.INIPA.numeric && errors.push('Только цифры')
+      if (!this.$v.patientInfo.snils.$dirty) return errors
+      !this.$v.patientInfo.snils.required && errors.push('Поле обязательно для заполнения')
+      !this.$v.patientInfo.snils.maxLength && errors.push('Не больше 11 символов')
+      !this.$v.patientInfo.snils.numeric && errors.push('Только цифры')
       return errors
     },
     heightErrors() {
@@ -266,7 +266,7 @@ export default {
           lastName: this.patientInfo.lastName,
           firstName: this.patientInfo.firstName,
           patronymic: this.patientInfo.patronymic,
-          INIPA: this.patientInfo.INIPA,
+          snils: this.patientInfo.snils,
           height: this.patientInfo.height,
           weight: this.patientInfo.weight,
           gender: this.patientInfo.select,
@@ -294,7 +294,7 @@ export default {
       this.patientInfo.lastName = ''
       this.patientInfo.firstName = ''
       this.patientInfo.patronymic = ''
-      this.patientInfo.INIPA = ''
+      this.patientInfo.snils = ''
       this.patientInfo.height = ''
       this.patientInfo.weight = ''
       this.patientInfo.select = null

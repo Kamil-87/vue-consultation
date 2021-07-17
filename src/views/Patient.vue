@@ -15,7 +15,7 @@
           <v-list-item-content>
             <v-list-item-title>{{ `Возраст - ${age} ` }}</v-list-item-title>
             <v-list-item-title>{{ `Пол - ${patient.gender} ` }}</v-list-item-title>
-            <v-list-item-title>{{ `СНИЛС - ${patient.INIPA} ` }}</v-list-item-title>
+            <v-list-item-title>{{ `СНИЛС - ${patient.snils} ` }}</v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-content>

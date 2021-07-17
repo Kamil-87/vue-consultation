@@ -17,7 +17,7 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-/*Vue.directive('INIPA', {
+Vue.directive('phone', {
   bind(el) {
     function replaceNumberForInput(value) {
       let val = ''
@@ -32,15 +32,6 @@ new Vue({
       return val
     }
 
-    function replaceNumberForPaste(value) {
-      const r = value.replace(/\D/g, '')
-      let val = r
-      if (val.charAt(0) === '7') {
-        val = '8' + val.slice(1)
-      }
-      return replaceNumberForInput(val)
-    }
-
     el.oninput = function(e) {
       if (!e.isTrusted) {
         return
@@ -51,9 +42,9 @@ new Vue({
     el.onpaste = function() {
       setTimeout(() => {
         const pasteVal = el.value
-        this.value = replaceNumberForPaste(pasteVal)
+        this.value = replaceNumberForInput(pasteVal)
       })
     }
 
   }
-})*/
+})

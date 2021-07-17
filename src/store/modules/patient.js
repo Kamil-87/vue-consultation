@@ -1,14 +1,10 @@
-/*Страховой номер индивидуального лицевого счёта
-*Insurance number of the individual personal account
-* Сокращение СНИЛС = INIPA
-*/
 
 const patientsData = [
-  {id: 1, lastName: 'Иванов', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', INIPA: '145-111-111 11', height: 192, weight: 86},
-  {id: 2, lastName: 'Петров', firstName: 'Пётр', patronymic: 'Петрович', birthday: '13-07-1953', gender: 'Мужской', INIPA: '145-111-111 12', height: 182, weight: 76},
-  {id: 3, lastName: 'Петрова', firstName: 'Мария', patronymic: 'Петровна', birthday: '13-07-1953', gender: 'Женский', INIPA: '145-111-111 13', height: 172, weight: 66},
+  {id: 1, lastName: 'Иванов', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 11', height: 192, weight: 86},
+  {id: 2, lastName: 'Петров', firstName: 'Пётр', patronymic: 'Петрович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 12', height: 182, weight: 76},
+  {id: 3, lastName: 'Петрова', firstName: 'Мария', patronymic: 'Петровна', birthday: '13-07-1953', gender: 'Женский', snils: '145-111-111 13', height: 172, weight: 66},
 ]
-// const patientData = {id: 1, lastName: 'Петров', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', INIPA: '145-111-111 11', height: 192, weight: 86}
+// const patientData = {id: 1, lastName: 'Петров', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 11', height: 192, weight: 86}
 
 export default {
   state: {
@@ -29,7 +25,7 @@ export default {
       patient.firstName = patientData.firstName
       patient.lastName = patientData.lastName
       patient.patronymic = patientData.patronymic
-      patient.INIPA = patientData.INIPA
+      patient.snils = patientData.snils
       patient.height = patientData.height
       patient.weight = patientData.weight
       patient.select = patientData.gender

@@ -49,7 +49,7 @@
               <td>{{ `${item.lastName} ${item.firstName}` }}</td>
               <td>{{ item.birthday }}</td>
               <td>{{ item.gender }}</td>
-              <td>{{ item.INIPA }}</td>
+              <td>{{ item.snils }}</td>
               <td>
                 <v-btn
                   icon
@@ -108,7 +108,7 @@ export default {
         {text: 'ФИО', value: 'name',},
         {text: 'День рождения', value: 'birthday'},
         {text: 'Пол', value: 'gender'},
-        {text: 'СНИЛС', value: 'INIPA'},
+        {text: 'СНИЛС', value: 'snils'},
       ],
 
     }
