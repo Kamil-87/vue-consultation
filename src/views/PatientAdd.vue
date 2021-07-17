@@ -1,16 +1,16 @@
 <template>
   <v-container>
-      <v-snackbar
-        v-model="snackbar"
-        :timeout="3000"
-        :color="statusMessage"
-        top
-        right
-        min-width="250px"
-        class="mt-15"
-      >
-        {{ text }}
-      </v-snackbar>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="3000"
+      :color="statusMessage"
+      top
+      right
+      min-width="250px"
+      class="mt-15"
+    >
+      {{ text }}
+    </v-snackbar>
 
     <h1 class="subheading grey--text mb-5">Добавить пациента</h1>
     <form>
@@ -47,21 +47,10 @@
         placeholder="___-___-___ __"
         label="СНИЛС"
         maxlength="14"
+        @keyup="validateSnils"
         @input="$v.snils.$touch()"
         @blur="$v.snils.$touch()"
       ></v-text-field>
-
-<!--      добраться до input и прописать v-phone и поменять на v-snils -->
-<!--      <v-text-field
-        data-test="test"
-        v-model="phone"
-        :counter="11"
-        placeholder="___-___-___ __ "
-        name="phone"
-        id="phone"
-        label="phone"
-      ></v-text-field>-->
-
 
       <v-menu
         v-model="menu"
@@ -133,8 +122,8 @@
 
 <script>
 import {validationMixin} from 'vuelidate'
-import {required, maxLength, numeric} from 'vuelidate/lib/validators'
-import {format, parseISO } from 'date-fns'
+import {required, maxLength, minLength} from 'vuelidate/lib/validators'
+import {format, parseISO} from 'date-fns'
 
 export default {
   mixins: [validationMixin],
@@ -143,7 +132,7 @@ export default {
     firstName: {required, maxLength: maxLength(10)},
     lastName: {required, maxLength: maxLength(10)},
     patronymic: {maxLength: maxLength(10)},
-    snils: {required, maxLength: maxLength(11), numeric},
+    snils: {required, minLength: minLength(14)},
     height: {maxLength: maxLength(3)},
     weight: {maxLength: maxLength(3)},
     select: {required},
@@ -209,8 +198,7 @@ export default {
       const errors = []
       if (!this.$v.snils.$dirty) return errors
       !this.$v.snils.required && errors.push('Поле обязательно для заполнения')
-      !this.$v.snils.maxLength && errors.push('Не больше 11 символов')
-      !this.$v.snils.numeric && errors.push('Только цифры')
+      !this.$v.snils.minLength && errors.push('Введите корректный СНИЛС')
       return errors
     },
     heightErrors() {
@@ -278,6 +266,20 @@ export default {
       this.select = null
       this.birthday = null
     },
+    validateSnils() {
+      const x = this.snils.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,3})(\d{0,2})/)
+
+      this.snils = x[1]
+      if (x[2]) {
+        this.snils = x[1] + '-' + x[2]
+      }
+      if (x[3]) {
+        this.snils = x[1] + '-' + x[2] + '-' + x[3]
+      }
+      if (x[4]) {
+        this.snils = x[1] + '-' + x[2] + '-' + x[3] + ' ' + x[4]
+      }
+    }
   },
 }
 </script>
