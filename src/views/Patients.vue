@@ -5,11 +5,11 @@
         Пациенты
         <v-spacer></v-spacer>
         <v-text-field
-            v-model="searchValue"
-            append-icon="mdi-magnify"
-            label="Поиск по СНИЛС или по фамилии"
-            single-line
-            hide-details
+          v-model="searchValue"
+          append-icon="mdi-magnify"
+          label="Поиск по СНИЛС или по фамилии"
+          single-line
+          hide-details
         ></v-text-field>
       </v-card-title>
 
@@ -21,17 +21,29 @@
         <v-simple-table>
           <template v-slot:default>
             <thead>
-            <tr>
-              <th class="text-left">
+            <tr class="table-head">
+              <th
+                class="text-left"
+                @click="sortLastname"
+              >
                 ФИО
               </th>
-              <th class="text-left">
+              <th
+                class="text-left"
+                @click="sortBirthday"
+              >
                 День рождения
               </th>
-              <th class="text-left">
+              <th
+                class="text-left"
+                @click="sortGender"
+              >
                 Пол
               </th>
-              <th class="text-left">
+              <th
+                class="text-left"
+                @click="sortSnils"
+              >
                 СНИЛС
               </th>
               <th class="text-left">
@@ -41,8 +53,8 @@
             </thead>
             <tbody>
             <tr
-                v-for="item in filteredPatients"
-                :key="item.id"
+              v-for="item in filteredPatients"
+              :key="item.id"
             >
               <td>{{ `${item.lastName} ${item.firstName}` }}</td>
               <td>{{ item.birthday }}</td>
@@ -50,36 +62,36 @@
               <td>{{ item.snils }}</td>
               <td>
                 <v-btn
-                    icon
-                    class="mx-1"
-                    small
-                    fab
-                    color="primary"
-                    @click="detailedPatient(item.id)"
+                  icon
+                  class="mx-1"
+                  small
+                  fab
+                  color="primary"
+                  @click="detailedPatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-open-in-new
                   </v-icon>
                 </v-btn>
                 <v-btn
-                    icon
-                    class="mx-1"
-                    small
-                    fab
-                    color="primary"
-                    @click="editPatient(item.id)"
+                  icon
+                  class="mx-1"
+                  small
+                  fab
+                  color="primary"
+                  @click="editPatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-pencil
                   </v-icon>
                 </v-btn>
                 <v-btn
-                    icon
-                    class="mx-1"
-                    small
-                    fab
-                    color="error"
-                    @click="deletePatient(item.id)"
+                  icon
+                  class="mx-1"
+                  small
+                  fab
+                  color="error"
+                  @click="deletePatient(item.id)"
                 >
                   <v-icon dark>
                     mdi-delete
@@ -123,7 +135,7 @@ export default {
     ...mapActions(['fetchPatients', 'deletePatient']),
 
     detailedPatient(userId) {
-           this.$router.push({name: 'Patient', params: {id: userId}})
+      this.$router.push({name: 'Patient', params: {id: userId}})
     },
     addPatient() {
       this.$router.push({name: 'PatientAdd'})
@@ -133,12 +145,32 @@ export default {
     },
     deletePatient(userId) {
       this.$store.dispatch('deletePatient', userId)
-    }
+    },
+
+    //сортировка по названиям таблиц
+    sortLastname() {
+      this.patients.sort((a, b) => a.lastName.localeCompare(b.lastName))
+    },
+    sortSnils() {
+      console.log('snils')
+      this.patients.sort((a, b) => a.snils.localeCompare(b.snils))
+    },
+    sortGender() {
+      this.patients.sort((a, b) => a.gender.localeCompare(b.gender))
+    },
+    sortBirthday() {
+      this.patients.sort((a, b) => a.birthday.localeCompare(b.birthday))
+    },
+
   },
 
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.table-head {
+  th {
+    cursor: pointer;
+  }
+}
 </style>

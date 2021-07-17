@@ -1,8 +1,8 @@
 
 const patientsData = [
-  {id: 1, lastName: 'Иванов', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 11', height: 192, weight: 86},
-  {id: 2, lastName: 'Петров', firstName: 'Пётр', patronymic: 'Петрович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 12', height: 182, weight: 76},
-  {id: 3, lastName: 'Петрова', firstName: 'Мария', patronymic: 'Петровна', birthday: '13-07-1953', gender: 'Женский', snils: '145-111-111 13', height: 172, weight: 66},
+  {id: 1, lastName: 'Иванов', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1955', gender: 'Мужской', snils: '145-111-131 11', height: 192, weight: 86},
+  {id: 2, lastName: 'Петров', firstName: 'Пётр', patronymic: 'Петрович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-131-111 12', height: 182, weight: 76},
+  {id: 3, lastName: 'Петрова', firstName: 'Мария', patronymic: 'Петровна', birthday: '13-07-1983', gender: 'Женский', snils: '125-111-111 13', height: 172, weight: 66},
 ]
 // const patientData = {id: 1, lastName: 'Петров', firstName: 'Иван', patronymic: 'Иванович', birthday: '13-07-1953', gender: 'Мужской', snils: '145-111-111 11', height: 192, weight: 86}
 
