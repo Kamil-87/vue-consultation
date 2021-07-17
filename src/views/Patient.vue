@@ -48,6 +48,9 @@
               <th class="text-center">
                 Дата посещения
               </th>
+              <th class="text-left">
+                Симптомы
+              </th>
               <th class="text-right">
                 Действия
               </th>
@@ -55,11 +58,13 @@
             </thead>
             <tbody>
             <tr
-              v-for="consultation in consultations"
+              v-for="consultation in consultationsByUser"
               :key="consultation.id"
             >
               <td>{{ consultation.specialist }}</td>
               <td class="text-center">{{ `${consultation.day} ${consultation.time} ` }}</td>
+              <td>{{ consultation.symptoms }}</td>
+
               <td class="text-right">
                 <v-btn
                   icon
@@ -99,7 +104,7 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapGetters} from "vuex"
+import {mapMutations, mapGetters,} from "vuex"
 import ConsultationAdd from "../components/consultation/ConsultationAddOrEdit";
 
 export default {
@@ -111,31 +116,31 @@ export default {
     patient() {
       return this.$store.getters.patientById(this.$route.params.id)
     },
+    consultationsByUser() {
+      return this.$store.getters.consultationsByUser(this.patient.id)
+    },
     age() {
       return ((Date.now() - new Date(this.patient.birthday)) / (24 * 3600 * 365.25 * 1000) | 0)
     },
   },
   methods: {
-    ...mapActions(['fetchConsultation']),
     ...mapMutations(['showConsultationDialog']),
+
+    editPatient() {
+      this.$router.push({name: 'PatientEdit', params: {id: this.$route.params.id}})
+    },
+
+    //Действия с консультациями
     addConsultation() {
       this.showConsultationDialog(null)
     },
     editConsultation(id) {
       this.showConsultationDialog(id)
     },
-    editPatient() {
-      this.$router.push({name: 'PatientEdit', params: {id: this.$route.params.id}})
-    },
-
-    //Действия с консультациями
     deleteConsultation(id) {
       this.$store.dispatch('deleteConsultation', id)
     }
 
-  },
-  mounted() {
-    this.fetchConsultation()
   }
 }
 </script>

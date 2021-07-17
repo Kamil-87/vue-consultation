@@ -1,109 +1,111 @@
 <template>
   <v-dialog
-      max-width="600"
-      v-model="$store.getters.addConsultationDialogVisible"
-      @click:outside="$store.commit('hideConsultationDialog')"
+    max-width="600"
+    v-model="$store.getters.addConsultationDialogVisible"
+    @click:outside="$store.commit('hideConsultationDialog')"
   >
     <v-snackbar
-        v-model="snackbar"
-        :timeout="3000"
-        :color="statusMessage"
-        top
-        min-width="250px"
-        class="mt-15"
+      v-model="snackbar"
+      :timeout="3000"
+      :color="statusMessage"
+      top
+      min-width="250px"
+      class="mt-15"
     >
       {{ text }}
     </v-snackbar>
     <v-card>
-      <v-card-title class="subheading grey--text mb-5">{{ isEdit ? 'Редактирование консультации' : 'Добавление консультации' }}</v-card-title>
+      <v-card-title class="subheading grey--text mb-5">
+        {{ isEdit ? 'Редактирование консультации' : 'Добавление консультации' }}
+      </v-card-title>
       <v-card-text>
         <form>
           <v-select
-              v-model="select"
-              :items="specialists"
-              :error-messages="selectErrors"
-              label="Выберите специалиста"
-              prepend-inner-icon="mdi-account-supervisor"
-              required
-              @change="$v.select.$touch()"
-              @blur="$v.select.$touch()"
+            v-model="select"
+            :items="specialists"
+            :error-messages="selectErrors"
+            label="Выберите специалиста"
+            prepend-inner-icon="mdi-account-supervisor"
+            required
+            @change="$v.select.$touch()"
+            @blur="$v.select.$touch()"
           ></v-select>
 
           <v-menu
-              v-model="menuDate"
-              :close-on-content-click="false"
-              max-width="290"
+            v-model="menuDate"
+            :close-on-content-click="false"
+            max-width="290"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  :value="formattedDay"
-                  clearable
-                  label="Дата консультации"
-                  prepend-inner-icon="mdi-calendar"
-                  :error-messages="dayErrors"
-                  readonly
-                  required
-                  v-bind="attrs"
-                  v-on="on"
-                  @click:clear="day = null"
+                :value="formattedDay"
+                clearable
+                label="Дата консультации"
+                prepend-inner-icon="mdi-calendar"
+                :error-messages="dayErrors"
+                readonly
+                required
+                v-bind="attrs"
+                v-on="on"
+                @click:clear="day = null"
               ></v-text-field>
             </template>
             <v-date-picker
-                v-model="day"
-                @change="menuDate = false"
-                :min="dateToday"
-                locale="ru-ru"
+              v-model="day"
+              @change="menuDate = false"
+              :min="dateToday"
+              locale="ru-ru"
             ></v-date-picker>
           </v-menu>
 
           <v-menu
-              ref="menuTime"
-              v-model="menuTime"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              :return-value.sync="time"
-              transition="scale-transition"
-              offset-y
-              max-width="290px"
-              min-width="290px"
+            ref="menuTime"
+            v-model="menuTime"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            :return-value.sync="time"
+            transition="scale-transition"
+            offset-y
+            max-width="290px"
+            min-width="290px"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                  v-model="time"
-                  label="Время консультации"
-                  prepend-inner-icon="mdi-clock-time-four-outline"
-                  :error-messages="timeErrors"
-                  readonly
-                  required
-                  v-bind="attrs"
-                  v-on="on"
+                v-model="time"
+                label="Время консультации"
+                prepend-inner-icon="mdi-clock-time-four-outline"
+                :error-messages="timeErrors"
+                readonly
+                required
+                v-bind="attrs"
+                v-on="on"
               ></v-text-field>
             </template>
             <v-time-picker
-                v-if="menuTime"
-                v-model="time"
-                :allowed-minutes="allowedStep"
-                format="24hr"
-                min="8:00"
-                max="20:00"
-                full-width
-                @click:minute="$refs.menuTime.save(time)"
+              v-if="menuTime"
+              v-model="time"
+              :allowed-minutes="allowedStep"
+              format="24hr"
+              min="8:00"
+              max="20:00"
+              full-width
+              @click:minute="$refs.menuTime.save(time)"
             ></v-time-picker>
           </v-menu>
 
           <v-textarea
-              label="Симптомы"
-              rows="3"
-              prepend-inner-icon="mdi-comment"
-              :counter="2048"
-              maxlength="2048"
-              v-model="description"
-              :error-messages="descriptionErrors"
+            label="Симптомы"
+            rows="3"
+            prepend-inner-icon="mdi-comment"
+            :counter="2048"
+            maxlength="2048"
+            v-model="symptoms"
+            :error-messages="symptomsErrors"
           ></v-textarea>
 
           <v-btn
-              class="mr-4"
-              @click="submitHandler"
+            class="mr-4"
+            @click="submitHandler"
           >
             {{ isEdit ? 'Сохранить' : 'Добавить' }}
           </v-btn>
@@ -129,7 +131,7 @@ export default {
     select: {required},
     day: {required},
     time: {required},
-    description: {maxLength: maxLength(2048)},
+    symptoms: {maxLength: maxLength(2048)},
   },
 
   data() {
@@ -150,7 +152,7 @@ export default {
         'Невролог',
         'ЛОР',
       ],
-      description: '',
+      symptoms: '',
       isEdit: false
     }
   },
@@ -160,7 +162,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentConsultationId', 'consultationById', 'addConsultationDialogVisible']),
+    ...mapGetters(['currentConsultationId', 'consultationById', 'addConsultationDialogVisible', 'consultations']),
     selectErrors() {
       const errors = []
       if (!this.$v.select.$dirty) return errors
@@ -179,10 +181,10 @@ export default {
       !this.$v.time.required && errors.push('Поле обязательно для заполнения')
       return errors
     },
-    descriptionErrors() {
+    symptomsErrors() {
       const errors = []
-      if (!this.$v.description.$dirty) return errors
-      !this.$v.description.maxLength && errors.push('Не больше 2048 символов')
+      if (!this.$v.symptoms.$dirty) return errors
+      !this.$v.symptoms.maxLength && errors.push('Не больше 2048 символов')
       return errors
     },
     formattedDay() {
@@ -194,8 +196,8 @@ export default {
   },
   methods: {
     ...mapMutations(['hideConsultationDialog']),
-    // шаг по 5 минут
-    allowedStep: m => m % 5 === 0,
+    // шаг по 15 минут
+    allowedStep: m => m % 3 === 0,
 
     formatToIso(day) {
       return day.split('-').reverse().join('-')
@@ -208,12 +210,12 @@ export default {
         this.select = consultation.specialist
         this.day = this.formatToIso(consultation.day)
         this.time = consultation.time
-        this.description = consultation.symptoms
+        this.symptoms = consultation.symptoms
       } else {
         this.select = ''
         this.day = ''
         this.time = ''
-        this.description = ''
+        this.symptoms = ''
       }
     },
 
@@ -228,15 +230,39 @@ export default {
           id: this.isEdit ? this.currentConsultationId : Date.now(),
           day: this.formattedDay,
           time: this.time,
+          symptoms: this.symptoms,
           specialist: this.select,
+          idUser: parseInt(this.$route.params.id)
         }
+
+        //запрет добавления, при условии, если уже существует консультация для пациента в это же время
+
+        const date = new Date(`${this.day}T${this.time}`)
+        const isDate = this.consultations.find(c => {
+          const datePatient = new Date(`${this.formatToIso(c.day)}T${c.time}`)
+          return datePatient.getTime() === date.getTime()
+        })
+
+        if(isDate === undefined) {
+          console.log("время не занято")
+        } else {
+          this.text = 'Время занято, выберите другое имя'
+          this.statusMessage = 'error'
+          this.snackbar = true
+          console.log('занято')
+          return
+        }
+
         if (this.isEdit) {
           this.$store.dispatch('updateConsultation', formData)
           this.text = 'Данные успешно обновлены!'
+          // console.log('isDate', isDate===date)
         } else {
           this.$store.dispatch('createConsultation', formData)
           this.text = 'Данные успешно добавлены!'
+          // console.log('isDate', isDate===date)
         }
+
         this.statusMessage = 'success'
         this.snackbar = true
         this.hideConsultationDialog()
@@ -253,7 +279,7 @@ export default {
       this.select = ''
       this.day = null
       this.time = null
-      this.description = ''
+      this.symptoms = ''
     },
   }
 }

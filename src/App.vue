@@ -30,9 +30,10 @@ export default {
   },
   mounted() {
     this.fetchPatients()
+    this.fetchConsultation()
   },
   methods: {
-    ...mapActions(['fetchPatients'])
+    ...mapActions(['fetchPatients', 'fetchConsultation'])
   }
 };
 </script>
