@@ -54,6 +54,6 @@ export default {
   },
   getters: {
     patients: state => state.patients,
-    patientById: state => id => state.patients.find(p => p.id === id),
+    patientById: state => id => state.patients.find(p => p.id === parseInt(id))
   }
 }

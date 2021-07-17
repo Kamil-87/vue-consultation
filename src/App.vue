@@ -1,10 +1,17 @@
 <template>
   <v-app>
-<!--    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">-->
-<!--      <span>Успешно</span>-->
-<!--      <v-btn color="white" flat @click="snackbar = false">Close</v-btn>-->
-<!--    </v-snackbar>-->
-    <Navbar />
+    <v-snackbar
+        v-model="infoStatus.snackbar"
+        :timeout="3000"
+        :color="infoStatus.status"
+        top
+        right
+        min-width="250px"
+        class="mt-15"
+    >
+      {{ infoStatus.text }}
+    </v-snackbar>
+    <Navbar/>
     <v-main>
       <router-view/>
     </v-main>
@@ -13,9 +20,19 @@
 
 <script>
 import Navbar from "./components/Navbar"
+import {mapActions, mapGetters} from "vuex"
+
 export default {
   name: 'App',
   components: {Navbar},
-  data: () => ({}),
+  computed: {
+    ...mapGetters(['infoStatus'])
+  },
+  mounted() {
+    this.fetchPatients()
+  },
+  methods: {
+    ...mapActions(['fetchPatients'])
+  }
 };
 </script>

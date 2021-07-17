@@ -1,16 +1,16 @@
 <template>
   <v-dialog
-    max-width="600"
-    v-model="$store.getters.addConsultationDialogVisible"
-    @click:outside="$store.commit('hideDialog')"
+      max-width="600"
+      v-model="$store.getters.addConsultationDialogVisible"
+      @click:outside="$store.commit('hideConsultationDialog')"
   >
     <v-snackbar
-      v-model="snackbar"
-      :timeout="3000"
-      :color="statusMessage"
-      top
-      min-width="250px"
-      class="mt-15"
+        v-model="snackbar"
+        :timeout="3000"
+        :color="statusMessage"
+        top
+        min-width="250px"
+        class="mt-15"
     >
       {{ text }}
     </v-snackbar>
@@ -19,91 +19,91 @@
       <v-card-text>
         <form>
           <v-select
-            v-model="select"
-            :items="specialists"
-            :error-messages="selectErrors"
-            label="Выберите специалиста"
-            prepend-inner-icon="mdi-account-supervisor"
-            required
-            @change="$v.select.$touch()"
-            @blur="$v.select.$touch()"
+              v-model="select"
+              :items="specialists"
+              :error-messages="selectErrors"
+              label="Выберите специалиста"
+              prepend-inner-icon="mdi-account-supervisor"
+              required
+              @change="$v.select.$touch()"
+              @blur="$v.select.$touch()"
           ></v-select>
 
           <v-menu
-            v-model="menuDate"
-            :close-on-content-click="false"
-            max-width="290"
+              v-model="menuDate"
+              :close-on-content-click="false"
+              max-width="290"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                :value="formattedDay"
-                clearable
-                label="Дата консультации"
-                prepend-inner-icon="mdi-calendar"
-                :error-messages="dayErrors"
-                readonly
-                required
-                v-bind="attrs"
-                v-on="on"
-                @click:clear="day = null"
+                  :value="formattedDay"
+                  clearable
+                  label="Дата консультации"
+                  prepend-inner-icon="mdi-calendar"
+                  :error-messages="dayErrors"
+                  readonly
+                  required
+                  v-bind="attrs"
+                  v-on="on"
+                  @click:clear="day = null"
               ></v-text-field>
             </template>
             <v-date-picker
-              v-model="day"
-              @change="menuDate = false"
-              :min="dateToday"
-              locale="ru-ru"
+                v-model="day"
+                @change="menuDate = false"
+                :min="dateToday"
+                locale="ru-ru"
             ></v-date-picker>
           </v-menu>
 
           <v-menu
-            ref="menuTime"
-            v-model="menuTime"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            :return-value.sync="time"
-            transition="scale-transition"
-            offset-y
-            max-width="290px"
-            min-width="290px"
+              ref="menuTime"
+              v-model="menuTime"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                v-model="time"
-                label="Время консультации"
-                prepend-inner-icon="mdi-clock-time-four-outline"
-                :error-messages="timeErrors"
-                readonly
-                required
-                v-bind="attrs"
-                v-on="on"
+                  v-model="time"
+                  label="Время консультации"
+                  prepend-inner-icon="mdi-clock-time-four-outline"
+                  :error-messages="timeErrors"
+                  readonly
+                  required
+                  v-bind="attrs"
+                  v-on="on"
               ></v-text-field>
             </template>
             <v-time-picker
-              v-if="menuTime"
-              v-model="time"
-              :allowed-minutes="allowedStep"
-              format="24hr"
-              min="8:00"
-              max="20:00"
-              full-width
-              @click:minute="$refs.menuTime.save(time)"
+                v-if="menuTime"
+                v-model="time"
+                :allowed-minutes="allowedStep"
+                format="24hr"
+                min="8:00"
+                max="20:00"
+                full-width
+                @click:minute="$refs.menuTime.save(time)"
             ></v-time-picker>
           </v-menu>
 
           <v-textarea
-            label="Симптомы"
-            rows="3"
-            prepend-inner-icon="mdi-comment"
-            :counter="2048"
-            maxlength="2048"
-            v-model="description"
-            :error-messages="descriptionErrors"
+              label="Симптомы"
+              rows="3"
+              prepend-inner-icon="mdi-comment"
+              :counter="2048"
+              maxlength="2048"
+              v-model="description"
+              :error-messages="descriptionErrors"
           ></v-textarea>
 
           <v-btn
-            class="mr-4"
-            @click="submitHandler"
+              class="mr-4"
+              @click="submitHandler"
           >
             Добавить
           </v-btn>
@@ -120,7 +120,7 @@
 import {validationMixin} from 'vuelidate'
 import {required, maxLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
-import {mapMutations} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 export default {
   mixins: [validationMixin],
@@ -150,10 +150,17 @@ export default {
         'Невролог',
         'ЛОР',
       ],
-      description: ''
+      description: '',
+      isEdit: false
+    }
+  },
+  watch: {
+    currentConsultationId() {
+      this.refreshConsultation(this.currentConsultationId)
     }
   },
   computed: {
+    ...mapGetters(['currentConsultationId', 'consultationById', 'addConsultationDialogVisible']),
     selectErrors() {
       const errors = []
       if (!this.$v.select.$dirty) return errors
@@ -186,9 +193,29 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['hideDialog']),
+    ...mapMutations(['hideConsultationDialog']),
     // шаг по 5 минут
     allowedStep: m => m % 5 === 0,
+
+    formatToIso(day) {
+      return day.split('-').reverse().join('-')
+    },
+
+    refreshConsultation(currentConsultationId) {
+      this.isEdit = currentConsultationId !== null
+      if (this.isEdit) {
+        const consultation = this.consultationById(currentConsultationId)
+        this.select = consultation.specialist
+        this.day = this.formatToIso(consultation.day)
+        this.time = consultation.time
+        this.description = consultation.symptoms
+      } else {
+        this.select = ''
+        this.day = ''
+        this.time = ''
+        this.description = ''
+      }
+    },
 
     submitHandler() {
       if (this.$v.$invalid) {
@@ -198,18 +225,21 @@ export default {
 
       try {
         const formData = {
-          id: Date.now(),
+          id: this.isEdit ? this.currentConsultationId : Date.now(),
           day: this.formattedDay,
           time: this.time,
           specialist: this.select,
         }
-
-        // this.loading = true
-        this.$store.dispatch('createConsultation', formData)
-        this.text = 'Данные успешно добавлены!'
+        if (this.isEdit) {
+          this.$store.dispatch('updateConsultation', formData)
+          this.text = 'Данные успешно обновлены!'
+        } else {
+          this.$store.dispatch('createConsultation', formData)
+          this.text = 'Данные успешно добавлены!'
+        }
         this.statusMessage = 'success'
         this.snackbar = true
-        this.hideDialog()
+        this.hideConsultationDialog()
 
       } catch (e) {
         console.log(e)

@@ -7,28 +7,22 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    addConsultationDialogVisible: false,
-    editConsultationDialogVisible: false,
+    infoStatus: {}
   },
   mutations: {
-    showDialog(state) {
-        state.addConsultationDialogVisible = true
-    },
-    hideDialog(state) {
-        state.addConsultationDialogVisible = false
-    },
-    editConsultationShowDialog(state, id) {
-        state.editConsultationDialogVisible = true
-    },
-    editConsultationHideDialog(state) {
-        state.editConsultationDialogVisible = false
+    showStatusMessage(state, status) {
+      state.infoStatus.text = status.text
+      state.infoStatus.status = status.status
+      state.infoStatus.snackbar = status.snackbar
     },
   },
   actions: {
+    showStatusMessage({commit}, status) {
+      commit('showStatusMessage', status)
+    }
   },
   getters: {
-    addConsultationDialogVisible: state => state.addConsultationDialogVisible,
-    editConsultationDialogVisible: state => state.editConsultationDialogVisible,
+    infoStatus: state => state.infoStatus
   },
   modules: {
     patient,

@@ -118,14 +118,10 @@ export default {
       return `${this.patients.lastName} ${this.patients.firstName} ${this.patients.patronymic}`
     }
   },
-  mounted() {
-    this.fetchPatients()
-  },
   methods: {
     ...mapActions(['fetchPatients', 'deletePatient']),
     detailedPatient(userId) {
-      console.log('userId', userId)
-      this.$router.push({name: 'Patient', params: {id: userId}})
+           this.$router.push({name: 'Patient', params: {id: userId}})
     },
     addPatient() {
       this.$router.push({name: 'PatientAdd'})

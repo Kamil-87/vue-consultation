@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Patients from '../views/Patients.vue'
 import Patient from '../views/Patient.vue'
 import PatientAddOrEdit from '../views/PatientAddOrEdit.vue'
-import ConsultationAdd from '../views/Consultation.vue'
 
 Vue.use(VueRouter)
 
@@ -28,11 +27,7 @@ const routes = [
     name: 'Patient',
     component: Patient,
   },
-  {
-    path: '/consultation',
-    name: 'ConsultationAdd',
-    component: ConsultationAdd
-  }
+
 ]
 
 const router = new VueRouter({

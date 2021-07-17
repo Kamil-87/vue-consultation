@@ -54,7 +54,7 @@
                 small
                 fab
                 color="primary"
-                @click="EditConsultation(consultation.id)"
+                @click="editConsultation(consultation.id)"
               >
                 <v-icon dark>
                   mdi-pencil
@@ -95,7 +95,7 @@ export default {
   computed: {
     ...mapGetters({consultations: 'consultations'}),
     patient() {
-      return this.$store.getters.patientById(+this.$route.params.id)
+      return this.$store.getters.patientById(this.$route.params.id)
     },
     age() {
       return ((Date.now() - new Date(this.patient.birthday)) / (24 * 3600 * 365.25 * 1000) | 0)
@@ -103,12 +103,12 @@ export default {
   },
   methods: {
     ...mapActions(['fetchConsultation']),
-    ...mapMutations(['showDialog']),
+    ...mapMutations(['showConsultationDialog']),
     addConsultation() {
-      this.showDialog()
+      this.showConsultationDialog(null)
     },
-    EditConsultation(id) {
-      this.editConsultationShowDialog(id)
+    editConsultation(id) {
+      this.showConsultationDialog(id)
     },
     editPatient() {
       this.$router.push({name: 'PatientEdit', params: {id: this.$route.params.id}})

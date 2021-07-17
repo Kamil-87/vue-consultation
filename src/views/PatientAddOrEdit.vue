@@ -1,16 +1,5 @@
 <template>
   <v-container>
-    <v-snackbar
-        v-model="snackbar"
-        :timeout="3000"
-        :color="statusMessage"
-        top
-        right
-        min-width="250px"
-        class="mt-15"
-    >
-      {{ text }}
-    </v-snackbar>
 
     <h1 class="subheading grey--text mb-5">Редактировать данные пациента</h1>
     <form>
@@ -124,7 +113,7 @@
 import {validationMixin} from 'vuelidate'
 import {required, maxLength, minLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
-import {mapGetters} from "vuex"
+import {mapActions, mapGetters} from "vuex"
 
 export default {
   mixins: [validationMixin],
@@ -168,36 +157,28 @@ export default {
     isEdit: false
   }),
 
-  watch: {
-    current(id) {
-      if (this.isEdit) {
-        console.log('watch', id)
-        const patient = this.patients.find(p => p.id === id)
-        const birthday = patient.birthday.split('-').reverse().join('-')
-
-        //присваиваем полям значения текущего пациента
-        this.patientInfo.firstName = patient.firstName
-        this.patientInfo.lastName = patient.lastName
-        this.patientInfo.patronymic = patient.patronymic
-        this.patientInfo.snils = patient.snils
-        this.patientInfo.height = patient.height
-        this.patientInfo.weight = patient.weight
-        this.patientInfo.select = patient.gender
-        this.patientInfo.birthday = birthday
-      }
-    }
-  },
   created() {
     this.isEdit = this.$route.params.id !== undefined
     this.current = this.$route.params.id
-    console.log(this.isEdit)
-  },
-  beforeDestroy() {
-    this.current = null
+    if (this.isEdit) {
+      console.log('watch', this.current)
+      const patient = this.patientById(this.current)
+      const birthday = patient.birthday.split('-').reverse().join('-')
+
+      //присваиваем полям значения текущего пациента
+      this.patientInfo.firstName = patient.firstName
+      this.patientInfo.lastName = patient.lastName
+      this.patientInfo.patronymic = patient.patronymic
+      this.patientInfo.snils = patient.snils
+      this.patientInfo.height = patient.height
+      this.patientInfo.weight = patient.weight
+      this.patientInfo.select = patient.gender
+      this.patientInfo.birthday = birthday
+    }
   },
 
   computed: {
-    ...mapGetters({patients: 'patients'}),
+    ...mapGetters({patientById: 'patientById'}),
     selectErrors() {
       const errors = []
       if (!this.$v.patientInfo.select.$dirty) return errors
@@ -258,6 +239,27 @@ export default {
   },
 
   methods: {
+    prepareFormData() {
+      return {
+        id: this.isEdit ? this.current : Date.now(),
+        lastName: this.patientInfo.lastName,
+        firstName: this.patientInfo.firstName,
+        patronymic: this.patientInfo.patronymic,
+        snils: this.patientInfo.snils,
+        height: this.patientInfo.height,
+        weight: this.patientInfo.weight,
+        gender: this.patientInfo.select,
+        birthday: this.formattedBirthday
+      };
+    },
+    showStatusMessage(status, text) {
+      const statusData = {}
+      statusData.text = text
+      statusData.status = status
+      statusData.snackbar = true
+      this.$store.dispatch('showStatusMessage', statusData)
+      console.log("show message", statusData)
+    },
     submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch()
@@ -265,38 +267,19 @@ export default {
       }
 
       try {
-        const formData = {
-          lastName: this.patientInfo.lastName,
-          firstName: this.patientInfo.firstName,
-          patronymic: this.patientInfo.patronymic,
-          snils: this.patientInfo.snils,
-          height: this.patientInfo.height,
-          weight: this.patientInfo.weight,
-          gender: this.patientInfo.select,
-          birthday: this.formattedBirthday
-        }
-        // this.loading = true
+        const formData = this.prepareFormData()
         if (this.isEdit) {
-          formData.id = this.current
           this.$store.dispatch('updatePatient', formData)
+          this.showStatusMessage('success', 'Данные успешно изменены!')
         } else {
-          formData.id = Date.now()
           this.$store.dispatch('createPatient', formData)
+          this.showStatusMessage('success', 'Данные успешно добавлены!')
         }
 
-        this.text = 'Данные успешно изменены!'
-        this.statusMessage = 'success'
-        this.snackbar = true
-
+        this.goToPatientPage(formData.id)
       } catch (e) {
-        console.log(e)
-        this.text = 'Ошибка'
-        this.statusMessage = 'error'
-        this.snackbar = true
-
-      }
-      if (this.$v.$invalid) {
-
+        console.log("Error", e)
+        this.showStatusMessage('error', 'Ошибка')
       }
     },
     clear() {
@@ -323,6 +306,9 @@ export default {
       if (x[4]) {
         this.patientInfo.snils = x[1] + '-' + x[2] + '-' + x[3] + ' ' + x[4]
       }
+    },
+    goToPatientPage(id) {
+      this.$router.push({name: 'Patient', params: {id}})
     }
   },
 }
