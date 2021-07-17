@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <pre>{{$route.params.id}}</pre>
     <v-snackbar
       v-model="snackbar"
       :timeout="3000"
@@ -284,6 +283,7 @@ export default {
         this.text = 'Ошибка'
         this.statusMessage = 'error'
         this.snackbar = true
+
       }
       if(this.$v.$invalid) {
 

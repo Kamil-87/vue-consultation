@@ -16,6 +16,10 @@ export default {
     createConsultation(state, consultation) {
       state.consultations.push(consultation)
       localStorage.setItem('consultations', JSON.stringify(state.consultations))
+    },
+    deleteConsultation(state, id) {
+      const index = state.consultations.findIndex(el => el.id === id)
+      state.consultations.splice(index, 1)
     }
   },
   actions: {
@@ -24,6 +28,9 @@ export default {
     },
     createConsultation({commit}, consultation) {
       commit('createConsultation', consultation)
+    },
+    deleteConsultation({commit}, id) {
+      commit('deleteConsultation', id)
     }
   },
   getters: {

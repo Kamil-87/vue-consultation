@@ -47,110 +47,50 @@
             <v-list-item-subtitle>{{ `${consultation.day} ${consultation.time} ` }}</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-           <v-list-item-group>
-             <v-btn
-               icon
-               class="mx-1"
-               small
-               fab
-               color="primary"
-               @click="editPatient(consultation.id)"
-             >
-               <v-icon dark>
-                 mdi-pencil
-               </v-icon>
-             </v-btn>
-             <v-btn
-               icon
-               class="mx-1"
-               small
-               fab
-               color="error"
-               @click="deleteConsultation(consultation.id)"
-             >
-               <v-icon dark>
-                 mdi-delete
-               </v-icon>
-             </v-btn>
-           </v-list-item-group>
+            <v-list-item-group>
+              <v-btn
+                icon
+                class="mx-1"
+                small
+                fab
+                color="primary"
+                @click="EditConsultation(consultation.id)"
+              >
+                <v-icon dark>
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+              <v-btn
+                icon
+                class="mx-1"
+                small
+                fab
+                color="error"
+                @click="deleteConsultation(consultation.id)"
+              >
+                <v-icon dark>
+                  mdi-delete
+                </v-icon>
+              </v-btn>
+            </v-list-item-group>
           </v-list-item-action>
         </v-list-item>
 
       </v-list>
     </v-card>
 
-    <template>
-      <v-row justify="center">
-        <v-dialog
-          v-model="dialog"
-          persistent
-          max-width="600px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-            >
-              Open Dialog
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">User Profile</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      label="Legal first name*"
-                      required
-                    ></v-text-field>
-                  </v-col>
+    <ConsultationAdd />
 
-                </v-row>
-              </v-container>
-
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="dialog = false"
-              >
-                Close
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="dialog = false"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </template>
   </v-container>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex"
-import ConsultationForm from "../components/consultation/ConsultationForm";
+import {mapActions, mapMutations, mapGetters} from "vuex"
+import ConsultationAdd from "../components/consultation/ConsultationAdd";
 
 export default {
-  components: {ConsultationForm},
-  data: () => ({
-    dialog: false,
-  }),
+  components: {ConsultationAdd},
+  data: () => ({}),
 
   computed: {
     ...mapGetters({consultations: 'consultations'}),
@@ -163,8 +103,12 @@ export default {
   },
   methods: {
     ...mapActions(['fetchConsultation']),
+    ...mapMutations(['showDialog']),
     addConsultation() {
-      this.$router.push({name: 'ConsultationAdd', params: {id: this.$route.params.id}})
+      this.showDialog()
+    },
+    EditConsultation(id) {
+      this.editConsultationShowDialog(id)
     },
     editPatient() {
       this.$router.push({name: 'PatientEdit', params: {id: this.$route.params.id}})
