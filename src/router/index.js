@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Patients from '../views/Patients.vue'
 import Patient from '../views/Patient.vue'
 import PatientAddOrEdit from '../views/PatientAddOrEdit.vue'
+import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,11 @@ const routes = [
     path: '/patients/:id',
     name: 'Patient',
     component: Patient,
+  },
+  {
+    path: '/*',
+    name: 'notFound',
+    component: NotFound
   },
 
 ]

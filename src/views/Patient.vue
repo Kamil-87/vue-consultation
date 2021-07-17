@@ -36,47 +36,61 @@
 
     <v-card>
       <v-card-title>Назначенные приемы</v-card-title>
-      <!--        <pre>{{ consultations }}</pre>-->
-      <v-list>
-        <v-list-item
-          v-for="consultation in consultations"
-          :key="consultation.id"
-        >
-          <v-list-item-content>
-            <v-list-item-title>{{ consultation.specialist }}</v-list-item-title>
-            <v-list-item-subtitle>{{ `${consultation.day} ${consultation.time} ` }}</v-list-item-subtitle>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-list-item-group>
-              <v-btn
-                icon
-                class="mx-1"
-                small
-                fab
-                color="primary"
-                @click="editConsultation(consultation.id)"
-              >
-                <v-icon dark>
-                  mdi-pencil
-                </v-icon>
-              </v-btn>
-              <v-btn
-                icon
-                class="mx-1"
-                small
-                fab
-                color="error"
-                @click="deleteConsultation(consultation.id)"
-              >
-                <v-icon dark>
-                  mdi-delete
-                </v-icon>
-              </v-btn>
-            </v-list-item-group>
-          </v-list-item-action>
-        </v-list-item>
 
-      </v-list>
+      <v-card-text>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+            <tr>
+              <th class="text-left">
+                Специалист
+              </th>
+              <th class="text-center">
+                Дата посещения
+              </th>
+              <th class="text-right">
+                Действия
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+              v-for="consultation in consultations"
+              :key="consultation.id"
+            >
+              <td>{{ consultation.specialist }}</td>
+              <td class="text-center">{{ `${consultation.day} ${consultation.time} ` }}</td>
+              <td class="text-right">
+                <v-btn
+                  icon
+                  class="mx-1"
+                  small
+                  fab
+                  color="primary"
+                  @click="editConsultation(consultation.id)"
+                >
+                  <v-icon dark>
+                    mdi-pencil
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  class="mx-1"
+                  small
+                  fab
+                  color="error"
+                  @click="deleteConsultation(consultation.id)"
+                >
+                  <v-icon dark>
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
+              </td>
+            </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-card-text>
     </v-card>
 
     <ConsultationAdd />
@@ -86,7 +100,7 @@
 
 <script>
 import {mapActions, mapMutations, mapGetters} from "vuex"
-import ConsultationAdd from "../components/consultation/ConsultationAdd";
+import ConsultationAdd from "../components/consultation/ConsultationAddOrEdit";
 
 export default {
   components: {ConsultationAdd},

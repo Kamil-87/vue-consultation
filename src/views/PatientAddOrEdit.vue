@@ -1,7 +1,7 @@
 <template>
   <v-container>
 
-    <h1 class="subheading grey--text mb-5">Редактировать данные пациента</h1>
+    <h1 class="subheading grey--text mb-5">{{ isEdit ? 'Редактировать данные пациента' : 'Добавить данные пациента'}}</h1>
     <form>
       <v-text-field
           v-model="patientInfo.lastName"
@@ -113,7 +113,7 @@
 import {validationMixin} from 'vuelidate'
 import {required, maxLength, minLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
-import {mapActions, mapGetters} from "vuex"
+import { mapGetters} from "vuex"
 
 export default {
   mixins: [validationMixin],

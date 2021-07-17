@@ -15,7 +15,7 @@
       {{ text }}
     </v-snackbar>
     <v-card>
-      <v-card-title class="subheading grey--text mb-5">Добавление консультации</v-card-title>
+      <v-card-title class="subheading grey--text mb-5">{{ isEdit ? 'Редактирование консультации' : 'Добавление консультации' }}</v-card-title>
       <v-card-text>
         <form>
           <v-select
@@ -105,7 +105,7 @@
               class="mr-4"
               @click="submitHandler"
           >
-            Добавить
+            {{ isEdit ? 'Сохранить' : 'Добавить' }}
           </v-btn>
           <v-btn @click="clear">
             Очистить
@@ -120,7 +120,7 @@
 import {validationMixin} from 'vuelidate'
 import {required, maxLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
-import {mapActions, mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   mixins: [validationMixin],

@@ -5,9 +5,9 @@
         Пациенты
         <v-spacer></v-spacer>
         <v-text-field
-            v-model="search"
+            v-model="searchValue"
             append-icon="mdi-magnify"
-            label="Search"
+            label="Поиск по СНИЛС или по фамилии"
             single-line
             hide-details
         ></v-text-field>
@@ -41,7 +41,7 @@
             </thead>
             <tbody>
             <tr
-                v-for="item in patients"
+                v-for="item in filteredPatients"
                 :key="item.id"
             >
               <td>{{ `${item.lastName} ${item.firstName}` }}</td>
@@ -101,25 +101,27 @@ import {mapActions, mapGetters} from 'vuex'
 export default {
   data() {
     return {
-      search: '',
+      searchValue: '',
       headers: [
         {text: 'ФИО', value: 'name',},
         {text: 'День рождения', value: 'birthday'},
         {text: 'Пол', value: 'gender'},
         {text: 'СНИЛС', value: 'snils'},
       ],
-
     }
   },
   computed: {
     ...mapGetters({patients: 'patients'}),
-    fullName() {
-      console.log(this.patients)
-      return `${this.patients.lastName} ${this.patients.firstName} ${this.patients.patronymic}`
+    filteredPatients() {
+      console.log(this.searchValue)
+      return this.patients.filter(patient => {
+        return patient.lastName.toLowerCase().includes(this.searchValue.toLowerCase()) || patient.snils.toLowerCase().includes(this.searchValue.toLowerCase())
+      })
     }
   },
   methods: {
     ...mapActions(['fetchPatients', 'deletePatient']),
+
     detailedPatient(userId) {
            this.$router.push({name: 'Patient', params: {id: userId}})
     },
@@ -133,9 +135,7 @@ export default {
       this.$store.dispatch('deletePatient', userId)
     }
   },
-  fullName(item) {
-    `${item.lastName} ${item.firstName} ${item.patronymic}`
-  }
+
 }
 </script>
 
