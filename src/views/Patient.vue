@@ -119,9 +119,12 @@ export default {
     consultationsByUser() {
       return this.$store.getters.consultationsByUser(this.patient.id)
     },
-    age() {
-      return ((Date.now() - new Date(this.patient.birthday)) / (24 * 3600 * 365.25 * 1000) | 0)
+    formatToIso() {
+      return this.patient.birthday.split('-').reverse().join('-')
     },
+    age() {
+      return ((Date.now() - new Date(this.formatToIso)) / (24 * 3600 * 365.25 * 1000) | 0)
+    }
   },
   methods: {
     ...mapMutations(['showConsultationDialog']),

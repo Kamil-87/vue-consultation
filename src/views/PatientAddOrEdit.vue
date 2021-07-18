@@ -2,6 +2,7 @@
   <v-container>
 
     <h1 class="subheading grey--text mb-5">{{ isEdit ? 'Редактировать данные пациента' : 'Добавить данные пациента'}}</h1>
+
     <form>
       <v-text-field
           v-model="patientInfo.lastName"
@@ -99,7 +100,6 @@
       <v-btn
           class="mr-4"
           @click="submitHandler"
-          :loading="loading"
           color="primary"
       >
         Сохранить
@@ -134,7 +134,7 @@ export default {
         validFormat: val => /^\d+$/.test(val)
       },
       weight: {
-        validFormat: val => /\d+/g.test(val)
+        validFormat: val => /^\d+$/.test(val)
       }
     }
   },
@@ -161,7 +161,6 @@ export default {
       ],
     },
     menu: false,
-    loading: false,
 
     current: null,
     isEdit: false
@@ -169,7 +168,7 @@ export default {
 
   created() {
     this.isEdit = this.$route.params.id !== undefined
-    this.current = this.$route.params.id
+    this.current = parseInt(this.$route.params.id)
     if (this.isEdit) {
       console.log('watch', this.current)
       const patient = this.patientById(this.current)
@@ -260,7 +259,7 @@ export default {
         weight: this.patientInfo.weight,
         gender: this.patientInfo.select,
         birthday: this.formattedBirthday
-      };
+      }
     },
     showStatusMessage(status, text) {
       const statusData = {}

@@ -116,13 +116,7 @@ import {mapActions, mapGetters} from 'vuex'
 export default {
   data() {
     return {
-      searchValue: '',
-      headers: [
-        {text: 'ФИО', value: 'name',},
-        {text: 'День рождения', value: 'birthday'},
-        {text: 'Пол', value: 'gender'},
-        {text: 'СНИЛС', value: 'snils'},
-      ],
+      searchValue: ''
     }
   },
   computed: {

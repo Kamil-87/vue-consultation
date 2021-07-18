@@ -28,6 +28,7 @@ export default {
   computed: {
     ...mapGetters(['infoStatus'])
   },
+
   mounted() {
     if(localStorage.getItem('patients') == null) {
       this.fetchPatients()

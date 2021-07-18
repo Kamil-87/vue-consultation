@@ -28,17 +28,19 @@ export default {
       state.consultations.push(consultation)
       localStorage.setItem('consultations', JSON.stringify(state.consultations))
     },
-    updateConsultation(state, updateConsultation) {
+    updateConsultation(state , updateConsultation) {
       const consultation = state.consultations.find(p => p.id === updateConsultation.id)
       consultation.specialist = updateConsultation.specialist
       consultation.day = updateConsultation.day
       consultation.time = updateConsultation.time
       consultation.symptoms = updateConsultation.symptoms
+
       localStorage.setItem('consultations', JSON.stringify(state.consultations))
     },
     deleteConsultation(state, id) {
       const index = state.consultations.findIndex(el => el.id === id)
       state.consultations.splice(index, 1)
+      localStorage.setItem('consultations', JSON.stringify(state.consultations))
     }
   },
   actions: {

@@ -37,6 +37,7 @@ export default {
     deletePatient(state, userId) {
       const index = state.patients.findIndex(el => el.id === userId)
       state.patients.splice(index, 1)
+      localStorage.setItem('patients', JSON.stringify(state.patients))
     }
   },
   actions: {
@@ -46,8 +47,9 @@ export default {
     createPatient({commit}, patient) {
       commit('createPatient', patient)
     },
-    updatePatient({commit}, patientData) {
+    updatePatient({commit}, patientData, statusData) {
       commit('updatePatient', patientData)
+
     },
     deletePatient({commit}, userId) {
       commit('deletePatient', userId)

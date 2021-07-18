@@ -4,16 +4,18 @@
     v-model="$store.getters.addConsultationDialogVisible"
     @click:outside="$store.commit('hideConsultationDialog')"
   >
+
     <v-snackbar
       v-model="snackbar"
-      :timeout="3000"
-      :color="statusMessage"
+      :timeout="2000"
+      :color="status"
       top
       min-width="250px"
       class="mt-15"
     >
       {{ text }}
     </v-snackbar>
+
     <v-card>
       <v-card-title class="subheading grey--text mb-5">
         {{ isEdit ? 'Редактирование консультации' : 'Добавление консультации' }}
@@ -38,7 +40,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                :value="formattedDay"
+                :value="formattedDay(day)"
                 clearable
                 label="Дата консультации"
                 prepend-inner-icon="mdi-calendar"
@@ -87,7 +89,7 @@
               :allowed-minutes="allowedStep"
               format="24hr"
               min="8:00"
-              max="20:00"
+              max="19:45"
               full-width
               @click:minute="$refs.menuTime.save(time)"
             ></v-time-picker>
@@ -122,7 +124,7 @@
 import {validationMixin} from 'vuelidate'
 import {required, maxLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
-import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex"
 
 export default {
   mixins: [validationMixin],
@@ -138,7 +140,7 @@ export default {
     return {
       text: 'Text',
       snackbar: false,
-      statusMessage: '',
+      status: '',
 
       menuDate: false,
       menuTime: false,
@@ -187,20 +189,32 @@ export default {
       !this.$v.symptoms.maxLength && errors.push('Не больше 2048 символов')
       return errors
     },
-    formattedDay() {
-      return this.day ? format(parseISO(this.day), 'dd-MM-yyyy') : ''
-    },
+
     dateToday() {
       return format(Date.now(), 'yyyy-MM-dd')
-    }
+    },
   },
   methods: {
     ...mapMutations(['hideConsultationDialog']),
     // шаг по 15 минут
-    allowedStep: m => m % 3 === 0,
+    allowedStep: m => m % 15 === 0,
+
+    formattedDay(day) {
+      return day ? format(parseISO(day), 'dd-MM-yyyy') : ''
+    },
 
     formatToIso(day) {
       return day.split('-').reverse().join('-')
+    },
+
+    showStatusMessage(status, text) {
+      const statusData = {}
+      statusData.text = text
+      statusData.status = status
+      statusData.snackbar = true
+
+      this.$store.dispatch('showStatusMessage', statusData)
+      console.log("show message", statusData)
     },
 
     refreshConsultation(currentConsultationId) {
@@ -237,39 +251,42 @@ export default {
       try {
         const formData = {
           id: this.isEdit ? this.currentConsultationId : Date.now(),
-          day: this.formattedDay,
+          day: this.formattedDay(this.day),
           time: this.time,
           symptoms: this.symptoms,
           specialist: this.select,
           idUser: parseInt(this.$route.params.id)
         }
 
-        //
-        //
-        // const date = new Date(`${this.day}T${this.time}`)
-        // const isDate = this.consultations.find(c => {
-        //   const datePatient = new Date(`${this.formatToIso(c.day)}T${c.time}`)
-        //   return datePatient.getTime() === date.getTime()
-        // })
+        console.log(this.timeIsNotSelected())
 
-        if(!(this.timeIsNotSelected === undefined)) {
+        if(!(this.timeIsNotSelected() === undefined)) {
           this.text = 'Время занято, выберите другое время'
-          this.statusMessage = 'warning'
+          this.status = 'warning'
           this.snackbar = true
           return
         }
 
         if (this.isEdit) {
           this.$store.dispatch('updateConsultation', formData)
+          // this.showStatusMessage('success', 'Данные успешно обновлены!')
+
+          //заглушка
           this.text = 'Данные успешно обновлены!'
+          this.status = 'success'
+          this.snackbar = true
         } else {
           this.$store.dispatch('createConsultation', formData)
+          // this.showStatusMessage('success', 'Данные успешно добавлены!')
+
+          //заглушка
           this.text = 'Данные успешно добавлены!'
+          this.status = 'success'
+          this.snackbar = true
         }
 
-        this.statusMessage = 'success'
-        this.snackbar = true
-        this.hideConsultationDialog()
+        setTimeout(() => this.hideConsultationDialog(), 2000)
+
 
       } catch (e) {
         console.log(e)
