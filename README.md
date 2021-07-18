@@ -1,19 +1,15 @@
-# vue-consultation
+# Учетная система “Консультации”
 
-## Project setup
+## Ссылка на github репозиторий
+https://kamil-87.github.io/vue-consultation/
+
+##Запуск программы
+
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+##Страница Patients
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![Patients](https://github.com/Kamil-87/vue-consultation/raw/master/gif/patients.gif)

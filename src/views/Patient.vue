@@ -34,6 +34,8 @@
     </v-btn>
     <v-spacer class="mb-5"/>
 
+    <ConsultationAddOrEdit />
+
     <v-card>
       <v-card-title>Назначенные приемы</v-card-title>
 
@@ -98,17 +100,15 @@
       </v-card-text>
     </v-card>
 
-    <ConsultationAdd />
-
   </v-container>
 </template>
 
 <script>
 import {mapMutations, mapGetters,} from "vuex"
-import ConsultationAdd from "../components/consultation/ConsultationAddOrEdit";
+import ConsultationAddOrEdit from "../components/consultation/ConsultationAddOrEdit"
 
 export default {
-  components: {ConsultationAdd},
+  components: { ConsultationAddOrEdit},
   data: () => ({}),
 
   computed: {

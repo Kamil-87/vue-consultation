@@ -108,6 +108,7 @@
           <v-btn
             class="mr-4"
             @click="submitHandler"
+            color="primary"
           >
             {{ isEdit ? 'Сохранить' : 'Добавить' }}
           </v-btn>
@@ -286,13 +287,12 @@ export default {
         }
 
         setTimeout(() => this.hideConsultationDialog(), 2000)
-
-
       } catch (e) {
         console.log(e)
         this.text = 'Ошибка'
-        this.statusMessage = 'error'
+        this.status = 'error'
         this.snackbar = true
+        setTimeout(() => this.hideConsultationDialog(), 2000)
       }
     },
     clear() {
