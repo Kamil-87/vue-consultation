@@ -219,6 +219,15 @@ export default {
       }
     },
 
+    //запрет добавления, при условии, если уже существует консультация для пациента в это же время
+    timeIsNotSelected() {
+      const date = new Date(`${this.day}T${this.time}`)
+      return this.consultations.find(c => {
+        const datePatient = new Date(`${this.formatToIso(c.day)}T${c.time}`)
+        return datePatient.getTime() === date.getTime()
+      })
+    },
+
     submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch()
@@ -235,32 +244,27 @@ export default {
           idUser: parseInt(this.$route.params.id)
         }
 
-        //запрет добавления, при условии, если уже существует консультация для пациента в это же время
+        //
+        //
+        // const date = new Date(`${this.day}T${this.time}`)
+        // const isDate = this.consultations.find(c => {
+        //   const datePatient = new Date(`${this.formatToIso(c.day)}T${c.time}`)
+        //   return datePatient.getTime() === date.getTime()
+        // })
 
-        const date = new Date(`${this.day}T${this.time}`)
-        const isDate = this.consultations.find(c => {
-          const datePatient = new Date(`${this.formatToIso(c.day)}T${c.time}`)
-          return datePatient.getTime() === date.getTime()
-        })
-
-        if(isDate === undefined) {
-          console.log("время не занято")
-        } else {
-          this.text = 'Время занято, выберите другое имя'
-          this.statusMessage = 'error'
+        if(!(this.timeIsNotSelected === undefined)) {
+          this.text = 'Время занято, выберите другое время'
+          this.statusMessage = 'warning'
           this.snackbar = true
-          console.log('занято')
           return
         }
 
         if (this.isEdit) {
           this.$store.dispatch('updateConsultation', formData)
           this.text = 'Данные успешно обновлены!'
-          // console.log('isDate', isDate===date)
         } else {
           this.$store.dispatch('createConsultation', formData)
           this.text = 'Данные успешно добавлены!'
-          // console.log('isDate', isDate===date)
         }
 
         this.statusMessage = 'success'

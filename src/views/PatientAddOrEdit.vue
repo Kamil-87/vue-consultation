@@ -6,8 +6,8 @@
       <v-text-field
           v-model="patientInfo.lastName"
           :error-messages="lastNameErrors"
-          :counter="10"
-          label="Фамилия"
+          :counter="nameLength"
+          label="Фамилия *"
           required
           @input="$v.patientInfo.lastName.$touch()"
           @blur="$v.patientInfo.lastName.$touch()"
@@ -15,8 +15,8 @@
       <v-text-field
           v-model="patientInfo.firstName"
           :error-messages="firstNameErrors"
-          :counter="10"
-          label="Имя"
+          :counter="nameLength"
+          label="Имя *"
           required
           @input="$v.patientInfo.firstName.$touch()"
           @blur="$v.patientInfo.firstName.$touch()"
@@ -24,7 +24,7 @@
       <v-text-field
           v-model="patientInfo.patronymic"
           :error-messages="patronymicErrors"
-          :counter="10"
+          :counter="nameLength"
           label="Отчество"
           @input="$v.patientInfo.patronymic.$touch()"
           @blur="$v.patientInfo.patronymic.$touch()"
@@ -34,7 +34,7 @@
           v-model="patientInfo.snils"
           :error-messages="snilsErrors"
           placeholder="___-___-___ __ "
-          label="СНИЛС"
+          label="СНИЛС *"
           maxlength="14"
           @keyup="validateSnils"
           @input="$v.patientInfo.snils.$touch()"
@@ -50,7 +50,7 @@
           <v-text-field
               :value="formattedBirthday"
               clearable
-              label="Дата рождения"
+              label="Дата рождения *"
               prepend-inner-icon="mdi-calendar"
               :error-messages="birthdayErrors"
               readonly
@@ -71,7 +71,7 @@
           v-model="patientInfo.select"
           :items="patientInfo.gender"
           :error-messages="selectErrors"
-          label="Ваш пол"
+          label="Ваш пол *"
           required
           @change="$v.patientInfo.select.$touch()"
           @blur="$v.patientInfo.select.$touch()"
@@ -89,6 +89,7 @@
       <v-text-field
           v-model="patientInfo.weight"
           :error-messages="weightErrors"
+          class="mb-5"
           maxlength="3"
           label="Вес"
           @input="$v.patientInfo.weight.$touch()"
@@ -99,6 +100,7 @@
           class="mr-4"
           @click="submitHandler"
           :loading="loading"
+          color="primary"
       >
         Сохранить
       </v-btn>
@@ -115,23 +117,31 @@ import {required, maxLength, minLength} from 'vuelidate/lib/validators'
 import {format, parseISO} from 'date-fns'
 import { mapGetters} from "vuex"
 
+const nameLength = 20
+
 export default {
   mixins: [validationMixin],
 
   validations: {
     patientInfo: {
-      firstName: {required, maxLength: maxLength(10)},
-      lastName: {required, maxLength: maxLength(10)},
-      patronymic: {maxLength: maxLength(10)},
+      firstName: {required, maxLength: maxLength(nameLength)},
+      lastName: {required, maxLength: maxLength(nameLength)},
+      patronymic: {maxLength: maxLength(nameLength)},
       snils: {required, minLength: minLength(14)},
-      height: {maxLength: maxLength(3)},
-      weight: {maxLength: maxLength(3)},
       select: {required},
-      birthday: {required}
+      birthday: {required},
+      height: {
+        validFormat: val => /^\d+$/.test(val)
+      },
+      weight: {
+        validFormat: val => /\d+/g.test(val)
+      }
     }
   },
 
   data: () => ({
+    nameLength: nameLength,
+
     text: 'Text',
     snackbar: false,
     statusMessage: '',
@@ -195,20 +205,20 @@ export default {
       const errors = []
       if (!this.$v.patientInfo.lastName.$dirty) return errors
       !this.$v.patientInfo.lastName.required && errors.push('Поле обязательно для заполнения')
-      !this.$v.patientInfo.lastName.maxLength && errors.push('Не больше 10 символов')
+      !this.$v.patientInfo.lastName.maxLength && errors.push(`Не больше ${nameLength} символов`)
       return errors
     },
     firstNameErrors() {
       const errors = []
       if (!this.$v.patientInfo.firstName.$dirty) return errors
       !this.$v.patientInfo.firstName.required && errors.push('Поле обязательно для заполнения')
-      !this.$v.patientInfo.firstName.maxLength && errors.push('Не больше 10 символов')
+      !this.$v.patientInfo.firstName.maxLength && errors.push(`Не больше ${nameLength} символов`)
       return errors
     },
     patronymicErrors() {
       const errors = []
       if (!this.$v.patientInfo.patronymic.$dirty) return errors
-      !this.$v.patientInfo.patronymic.maxLength && errors.push('Не больше 10 символов')
+      !this.$v.patientInfo.patronymic.maxLength && errors.push(`Не больше ${nameLength} символов`)
       return errors
     },
     snilsErrors() {
@@ -221,13 +231,13 @@ export default {
     heightErrors() {
       const errors = []
       if (!this.$v.patientInfo.height.$dirty) return errors
-      !this.$v.patientInfo.height.maxLength && errors.push('Не больше 3 символов')
+      !this.$v.patientInfo.height.validFormat && errors.push('Некорректные данные, введите цифры')
       return errors
     },
     weightErrors() {
       const errors = []
       if (!this.$v.patientInfo.weight.$dirty) return errors
-      !this.$v.patientInfo.weight.maxLength && errors.push('Не больше 3 символов')
+      !this.$v.patientInfo.weight.validFormat && errors.push('Некорректные данные, введите цифры')
       return errors
     },
     formattedBirthday() {

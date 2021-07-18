@@ -14,7 +14,10 @@
       </v-card-title>
 
       <v-card-text>
-        <v-btn class="mb-5" @click="addPatient()">
+        <v-btn
+          color="primary"
+          class="mb-5"
+          @click="addPatient()">
           Добавить пациента
         </v-btn>
 
@@ -125,7 +128,6 @@ export default {
   computed: {
     ...mapGetters({patients: 'patients'}),
     filteredPatients() {
-      console.log(this.searchValue)
       return this.patients.filter(patient => {
         return patient.lastName.toLowerCase().includes(this.searchValue.toLowerCase()) || patient.snils.toLowerCase().includes(this.searchValue.toLowerCase())
       })

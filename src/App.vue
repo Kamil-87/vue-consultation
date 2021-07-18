@@ -29,8 +29,11 @@ export default {
     ...mapGetters(['infoStatus'])
   },
   mounted() {
-    this.fetchPatients()
-    this.fetchConsultation()
+    if(localStorage.getItem('patients') == null) {
+      this.fetchPatients()
+      this.fetchConsultation()
+    }
+
   },
   methods: {
     ...mapActions(['fetchPatients', 'fetchConsultation'])
