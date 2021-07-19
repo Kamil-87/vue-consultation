@@ -12,6 +12,16 @@ npm install
 npm run serve
 ```
 
+## Технологический стек
+- Vue
+- Vuex
+- Vuetify
+
+### Библиотеки
+- Vue-router
+- Vuelidate
+- date-fns
+
 ##Страница Patients
 
 ![Patients](https://github.com/Kamil-87/vue-consultation/raw/master/gif/patients.gif)
