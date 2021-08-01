@@ -165,7 +165,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentConsultationId', 'consultationById', 'addConsultationDialogVisible', 'consultations']),
+    ...mapGetters('consultation', ['currentConsultationId', 'consultationById', 'addConsultationDialogVisible', 'consultations']),
     selectErrors() {
       const errors = []
       if (!this.$v.select.$dirty) return errors
@@ -196,7 +196,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['hideConsultationDialog']),
+    ...mapMutations('consultation', ['hideConsultationDialog']),
     // шаг по 15 минут
     allowedStep: m => m % 15 === 0,
 

@@ -6,6 +6,7 @@ const patientsData = [
 ]
 
 export default {
+  namespaced: true,
   state: {
     patients: JSON.parse(localStorage.getItem('patients')) || []
   },
@@ -19,8 +20,7 @@ export default {
       localStorage.setItem('patients', JSON.stringify(state.patients))
     },
     updatePatient(state, patientData) {
-      const patient = state.patients.find(p => p.id === patientData.id)
-
+      let patient = state.patients.find(p => p.id === patientData.id)
       patient.firstName = patientData.firstName
       patient.lastName = patientData.lastName
       patient.patronymic = patientData.patronymic
@@ -33,8 +33,10 @@ export default {
       localStorage.setItem('patients', JSON.stringify(state.patients))
     },
     deletePatient(state, userId) {
-      const index = state.patients.findIndex(el => el.id === userId)
-      state.patients.splice(index, 1)
+      // const index = state.patients.findIndex(el => el.id === userId)
+      // state.patients.splice(index, 1)
+      //сделать через фильтр
+      state.patients = state.patients.filter(el => el.id !== userId)
       localStorage.setItem('patients', JSON.stringify(state.patients))
     }
   },
@@ -45,7 +47,7 @@ export default {
     createPatient({commit}, patient) {
       commit('createPatient', patient)
     },
-    updatePatient({commit}, patientData, statusData) {
+    updatePatient({commit}, patientData) {
       commit('updatePatient', patientData)
     },
     deletePatient({commit}, userId) {
@@ -54,6 +56,10 @@ export default {
   },
   getters: {
     patients: state => state.patients,
-    patientById: state => id => state.patients.find(p => p.id === parseInt(id))
+    patientById(state) {
+       return function (id) {
+        return  state.patients.find(p => p.id === parseInt(id))
+       }
+    }
   }
 }

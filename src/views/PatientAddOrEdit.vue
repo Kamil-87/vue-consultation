@@ -104,7 +104,9 @@
       >
         Сохранить
       </v-btn>
-      <v-btn @click="clear">
+      <v-btn
+        v-if="!isEdit"
+        @click="clear">
         Очистить
       </v-btn>
     </form>
@@ -187,7 +189,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters({patientById: 'patientById'}),
+    ...mapGetters({patientById: 'patient/patientById'}),
     selectErrors() {
       const errors = []
       if (!this.$v.patientInfo.select.$dirty) return errors
@@ -278,10 +280,10 @@ export default {
       try {
         const formData = this.prepareFormData()
         if (this.isEdit) {
-          this.$store.dispatch('updatePatient', formData)
+          this.$store.dispatch('patient/updatePatient', formData)
           this.showStatusMessage('success', 'Данные успешно изменены!')
         } else {
-          this.$store.dispatch('createPatient', formData)
+          this.$store.dispatch('patient/createPatient', formData)
           this.showStatusMessage('success', 'Данные успешно добавлены!')
         }
 

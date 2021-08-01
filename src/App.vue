@@ -37,7 +37,8 @@ export default {
 
   },
   methods: {
-    ...mapActions(['fetchPatients', 'fetchConsultation'])
+    ...mapActions('consultation', ['fetchConsultation']),
+    ...mapActions('patient', ['fetchPatients'])
   }
 };
 </script>

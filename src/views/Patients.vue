@@ -120,7 +120,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({patients: 'patients'}),
+    ...mapGetters('patient', {patients: 'patients'}),
     filteredPatients() {
       return this.patients.filter(patient => {
         return patient.lastName.toLowerCase().includes(this.searchValue.toLowerCase()) || patient.snils.toLowerCase().includes(this.searchValue.toLowerCase())
@@ -128,7 +128,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchPatients', 'deletePatient']),
+    ...mapActions('patient', ['deletePatient']),
 
     detailedPatient(userId) {
       this.$router.push({name: 'Patient', params: {id: userId}})
@@ -140,7 +140,7 @@ export default {
       this.$router.push({name: 'PatientEdit', params: {id: userId}})
     },
     deletePatient(userId) {
-      this.$store.dispatch('deletePatient', userId)
+      this.$store.dispatch('patient/deletePatient', userId)
     },
 
     //сортировка по названиям таблиц

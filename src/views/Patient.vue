@@ -112,12 +112,12 @@ export default {
   data: () => ({}),
 
   computed: {
-    ...mapGetters({consultations: 'consultations'}),
+    ...mapGetters('consultation', {consultations: 'consultations'}),
     patient() {
-      return this.$store.getters.patientById(this.$route.params.id)
+      return this.$store.getters["patient/patientById"](this.$route.params.id)
     },
     consultationsByUser() {
-      return this.$store.getters.consultationsByUser(this.patient.id)
+      return this.$store.getters["consultation/consultationsByUser"](this.patient.id)
     },
     formatToIso() {
       return this.patient.birthday.split('-').reverse().join('-')
@@ -127,7 +127,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['showConsultationDialog']),
+    ...mapMutations('consultation', ['showConsultationDialog']),
 
     editPatient() {
       this.$router.push({name: 'PatientEdit', params: {id: this.$route.params.id}})
@@ -141,7 +141,7 @@ export default {
       this.showConsultationDialog(id)
     },
     deleteConsultation(id) {
-      this.$store.dispatch('deleteConsultation', id)
+      this.$store.dispatch('consultation/deleteConsultation', id)
     }
 
   }

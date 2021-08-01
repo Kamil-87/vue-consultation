@@ -6,6 +6,7 @@ const consultationsData = [
 ]
 
 export default {
+  namespaced: true,
   state: {
     addConsultationDialogVisible: false,
     consultations: JSON.parse(localStorage.getItem('consultations')) ?? [],
