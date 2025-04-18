@@ -64,7 +64,7 @@
 
 ## Контакты
 
-Telegram: @KonstantinShpilko — Константин Шпилько.
+Telegram: @test — Тест Тест.
 
 
 
